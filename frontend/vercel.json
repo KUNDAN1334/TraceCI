@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": ".next",
+  "regions": ["bom1"],
+  "headers": [
+    {
+      "source": "/demo-stream.json",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=300, s-maxage=3600" }]
+    }
+  ]
+}
