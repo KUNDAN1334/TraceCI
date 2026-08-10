@@ -1,0 +1,25 @@
+2026-08-04T09:51:31.2103629Z ##[group]Run ruff check .
+2026-08-04T09:52:08.2396632Z ruff check .
+2026-08-04T09:52:45.2689635Z shell: /usr/bin/bash -e {0}
+2026-08-04T09:53:22.2982638Z ##[endgroup]
+2026-08-04T09:53:59.3275641Z Checking 0 files...
+2026-08-04T09:54:36.3568644Z Checking 1 files...
+2026-08-04T09:55:13.3861647Z Checking 2 files...
+2026-08-04T09:55:50.4154650Z [31mapp/auth.py:5:8: F401[0m [*] `json` imported but unused
+2026-08-04T09:56:27.4447653Z   |
+2026-08-04T09:57:04.4740656Z 3 | import hashlib
+2026-08-04T09:57:41.5033659Z 4 | import hmac
+2026-08-04T09:58:18.5326662Z 5 | import json
+2026-08-04T09:58:55.5619665Z   |        ^^^^ F401
+2026-08-04T09:59:32.5912668Z   |
+2026-08-04T09:00:09.6205671Z   = help: Remove unused import: `json`
+2026-08-04T09:00:46.6498674Z 
+2026-08-04T09:01:23.6791677Z [31mapp/auth.py:53:5: F821[0m Undefined name `AUDIT_LOG`
+2026-08-04T09:02:00.7084680Z    |
+2026-08-04T09:02:37.7377683Z 53 |     AUDIT_LOG.append({"event": "issue", "user": user, "at": now})
+2026-08-04T09:03:14.7670686Z    |     ^^^^^^^^^ F821
+2026-08-04T09:03:51.7963689Z    |
+2026-08-04T09:04:28.8256692Z 
+2026-08-04T09:05:05.8549695Z Found 2 errors.
+2026-08-04T09:05:42.8842698Z [*] 1 fixable with the `--fix` option.
+2026-08-04T09:06:19.9135701Z ##[error]Process completed with exit code 1.

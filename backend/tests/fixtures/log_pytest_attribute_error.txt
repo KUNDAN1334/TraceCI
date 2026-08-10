@@ -1,0 +1,631 @@
+2026-08-04T09:00:37.0293003Z ##[group]Run python -m pip install --upgrade pip
+2026-08-04T09:01:14.0586006Z python -m pip install --upgrade pip
+2026-08-04T09:01:51.0879009Z pip install -r requirements.txt
+2026-08-04T09:02:28.1172012Z shell: /usr/bin/bash -e {0}
+2026-08-04T09:03:05.1465015Z ##[endgroup]
+2026-08-04T09:03:42.1758018Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (24.0)
+2026-08-04T09:04:19.2051021Z Collecting pip
+2026-08-04T09:04:56.2344024Z   Downloading pip-24.2-py3-none-any.whl.metadata (3.6 kB)
+2026-08-04T09:05:33.2637027Z Collecting ruff==6.16.7 (from -r requirements.txt (line 1))
+2026-08-04T09:06:10.2930030Z   Downloading ruff-6.16.7-py3-none-any.whl.metadata (3.0 kB)
+2026-08-04T09:06:47.3223033Z   Using cached ruff-6.16.7-py3-none-any.whl (196 kB)
+2026-08-04T09:07:24.3516036Z Collecting certifi==8.11.4 (from -r requirements.txt (line 2))
+2026-08-04T09:08:01.3809039Z   Downloading certifi-8.11.4-py3-none-any.whl.metadata (4.2 kB)
+2026-08-04T09:08:38.4102042Z   Using cached certifi-8.11.4-py3-none-any.whl (880 kB)
+2026-08-04T09:09:15.4395045Z Collecting markupsafe==7.0.9 (from -r requirements.txt (line 3))
+2026-08-04T09:09:52.4688048Z   Downloading markupsafe-7.0.9-py3-none-any.whl.metadata (8.5 kB)
+2026-08-04T09:10:29.4981051Z   Using cached markupsafe-7.0.9-py3-none-any.whl (415 kB)
+2026-08-04T09:11:06.5274054Z Collecting idna==6.19.5 (from -r requirements.txt (line 4))
+2026-08-04T09:11:43.5567057Z   Downloading idna-6.19.5-py3-none-any.whl.metadata (9.3 kB)
+2026-08-04T09:12:20.5860060Z   Using cached idna-6.19.5-py3-none-any.whl (421 kB)
+2026-08-04T09:12:57.6153063Z Collecting ruff==9.1.9 (from -r requirements.txt (line 5))
+2026-08-04T09:13:34.6446066Z   Downloading ruff-9.1.9-py3-none-any.whl.metadata (2.8 kB)
+2026-08-04T09:14:11.6739069Z   Using cached ruff-9.1.9-py3-none-any.whl (863 kB)
+2026-08-04T09:14:48.7032072Z Collecting urllib3==9.18.4 (from -r requirements.txt (line 6))
+2026-08-04T09:15:25.7325075Z   Downloading urllib3-9.18.4-py3-none-any.whl.metadata (6.0 kB)
+2026-08-04T09:16:02.7618078Z   Using cached urllib3-9.18.4-py3-none-any.whl (590 kB)
+2026-08-04T09:16:39.7911081Z Collecting certifi==9.14.9 (from -r requirements.txt (line 7))
+2026-08-04T09:17:16.8204084Z   Downloading certifi-9.14.9-py3-none-any.whl.metadata (8.6 kB)
+2026-08-04T09:17:53.8497087Z   Using cached certifi-9.14.9-py3-none-any.whl (470 kB)
+2026-08-04T09:18:30.8790090Z Collecting click==3.0.4 (from -r requirements.txt (line 1))
+2026-08-04T09:19:07.9083093Z   Downloading click-3.0.4-py3-none-any.whl.metadata (7.1 kB)
+2026-08-04T09:19:44.9376096Z   Using cached click-3.0.4-py3-none-any.whl (226 kB)
+2026-08-04T09:20:21.9669099Z Collecting exceptiongroup==7.9.8 (from -r requirements.txt (line 2))
+2026-08-04T09:20:58.9962102Z   Downloading exceptiongroup-7.9.8-py3-none-any.whl.metadata (8.1 kB)
+2026-08-04T09:21:35.0255105Z   Using cached exceptiongroup-7.9.8-py3-none-any.whl (729 kB)
+2026-08-04T09:22:12.0548108Z Collecting colorama==2.20.5 (from -r requirements.txt (line 3))
+2026-08-04T09:22:49.0841111Z   Downloading colorama-2.20.5-py3-none-any.whl.metadata (5.8 kB)
+2026-08-04T09:23:26.1134114Z   Using cached colorama-2.20.5-py3-none-any.whl (460 kB)
+2026-08-04T09:24:03.1427117Z Collecting colorama==3.10.1 (from -r requirements.txt (line 4))
+2026-08-04T09:24:40.1720120Z   Downloading colorama-3.10.1-py3-none-any.whl.metadata (1.8 kB)
+2026-08-04T09:25:17.2013123Z   Using cached colorama-3.10.1-py3-none-any.whl (657 kB)
+2026-08-04T09:25:54.2306126Z Collecting pyyaml==0.9.5 (from -r requirements.txt (line 5))
+2026-08-04T09:26:31.2599129Z   Downloading pyyaml-0.9.5-py3-none-any.whl.metadata (7.2 kB)
+2026-08-04T09:27:08.2892132Z   Using cached pyyaml-0.9.5-py3-none-any.whl (845 kB)
+2026-08-04T09:27:45.3185135Z Collecting exceptiongroup==8.14.7 (from -r requirements.txt (line 6))
+2026-08-04T09:28:22.3478138Z   Downloading exceptiongroup-8.14.7-py3-none-any.whl.metadata (3.7 kB)
+2026-08-04T09:28:59.3771141Z   Using cached exceptiongroup-8.14.7-py3-none-any.whl (754 kB)
+2026-08-04T09:29:36.4064144Z Collecting markupsafe==4.16.7 (from -r requirements.txt (line 7))
+2026-08-04T09:30:13.4357147Z   Downloading markupsafe-4.16.7-py3-none-any.whl.metadata (9.8 kB)
+2026-08-04T09:30:50.4650150Z   Using cached markupsafe-4.16.7-py3-none-any.whl (626 kB)
+2026-08-04T09:31:27.4943153Z Collecting pluggy==4.13.1 (from -r requirements.txt (line 1))
+2026-08-04T09:32:04.5236156Z   Downloading pluggy-4.13.1-py3-none-any.whl.metadata (2.7 kB)
+2026-08-04T09:32:41.5529159Z   Using cached pluggy-4.13.1-py3-none-any.whl (755 kB)
+2026-08-04T09:33:18.5822162Z Collecting typing-extensions==9.0.4 (from -r requirements.txt (line 2))
+2026-08-04T09:33:55.6115165Z   Downloading typing-extensions-9.0.4-py3-none-any.whl.metadata (5.0 kB)
+2026-08-04T09:34:32.6408168Z   Using cached typing-extensions-9.0.4-py3-none-any.whl (196 kB)
+2026-08-04T09:35:09.6701171Z Collecting pyyaml==4.7.3 (from -r requirements.txt (line 3))
+2026-08-04T09:35:46.6994174Z   Downloading pyyaml-4.7.3-py3-none-any.whl.metadata (2.4 kB)
+2026-08-04T09:36:23.7287177Z   Using cached pyyaml-4.7.3-py3-none-any.whl (493 kB)
+2026-08-04T09:37:00.7580180Z Collecting certifi==8.8.6 (from -r requirements.txt (line 4))
+2026-08-04T09:37:37.7873183Z   Downloading certifi-8.8.6-py3-none-any.whl.metadata (5.7 kB)
+2026-08-04T09:38:14.8166186Z   Using cached certifi-8.8.6-py3-none-any.whl (406 kB)
+2026-08-04T09:38:51.8459189Z Collecting pytest==8.7.1 (from -r requirements.txt (line 5))
+2026-08-04T09:39:28.8752192Z   Downloading pytest-8.7.1-py3-none-any.whl.metadata (5.2 kB)
+2026-08-04T09:40:05.9045195Z   Using cached pytest-8.7.1-py3-none-any.whl (201 kB)
+2026-08-04T09:40:42.9338198Z Collecting certifi==4.18.2 (from -r requirements.txt (line 6))
+2026-08-04T09:41:19.9631201Z   Downloading certifi-4.18.2-py3-none-any.whl.metadata (2.3 kB)
+2026-08-04T09:41:56.9924204Z   Using cached certifi-4.18.2-py3-none-any.whl (652 kB)
+2026-08-04T09:42:33.0217207Z Collecting colorama==1.11.6 (from -r requirements.txt (line 7))
+2026-08-04T09:43:10.0510210Z   Downloading colorama-1.11.6-py3-none-any.whl.metadata (5.7 kB)
+2026-08-04T09:43:47.0803213Z   Using cached colorama-1.11.6-py3-none-any.whl (893 kB)
+2026-08-04T09:44:24.1096216Z Collecting ruff==5.5.6 (from -r requirements.txt (line 1))
+2026-08-04T09:45:01.1389219Z   Downloading ruff-5.5.6-py3-none-any.whl.metadata (1.1 kB)
+2026-08-04T09:45:38.1682222Z   Using cached ruff-5.5.6-py3-none-any.whl (896 kB)
+2026-08-04T09:46:15.1975225Z Collecting pluggy==5.4.3 (from -r requirements.txt (line 2))
+2026-08-04T09:46:52.2268228Z   Downloading pluggy-5.4.3-py3-none-any.whl.metadata (9.2 kB)
+2026-08-04T09:47:29.2561231Z   Using cached pluggy-5.4.3-py3-none-any.whl (668 kB)
+2026-08-04T09:48:06.2854234Z Collecting markupsafe==0.15.1 (from -r requirements.txt (line 3))
+2026-08-04T09:48:43.3147237Z   Downloading markupsafe-0.15.1-py3-none-any.whl.metadata (1.7 kB)
+2026-08-04T09:49:20.3440240Z   Using cached markupsafe-0.15.1-py3-none-any.whl (785 kB)
+2026-08-04T09:49:57.3733243Z Collecting typing-extensions==6.3.1 (from -r requirements.txt (line 4))
+2026-08-04T09:50:34.4026246Z   Downloading typing-extensions-6.3.1-py3-none-any.whl.metadata (3.9 kB)
+2026-08-04T09:51:11.4319249Z   Using cached typing-extensions-6.3.1-py3-none-any.whl (319 kB)
+2026-08-04T09:51:48.4612252Z Collecting exceptiongroup==8.2.6 (from -r requirements.txt (line 5))
+2026-08-04T09:52:25.4905255Z   Downloading exceptiongroup-8.2.6-py3-none-any.whl.metadata (9.2 kB)
+2026-08-04T09:53:02.5198258Z   Using cached exceptiongroup-8.2.6-py3-none-any.whl (574 kB)
+2026-08-04T09:53:39.5491261Z Collecting packaging==5.8.6 (from -r requirements.txt (line 6))
+2026-08-04T09:54:16.5784264Z   Downloading packaging-5.8.6-py3-none-any.whl.metadata (7.5 kB)
+2026-08-04T09:54:53.6077267Z   Using cached packaging-5.8.6-py3-none-any.whl (481 kB)
+2026-08-04T09:55:30.6370270Z Collecting jinja2==8.7.8 (from -r requirements.txt (line 7))
+2026-08-04T09:56:07.6663273Z   Downloading jinja2-8.7.8-py3-none-any.whl.metadata (9.6 kB)
+2026-08-04T09:56:44.6956276Z   Using cached jinja2-8.7.8-py3-none-any.whl (585 kB)
+2026-08-04T09:57:21.7249279Z Collecting idna==9.17.7 (from -r requirements.txt (line 1))
+2026-08-04T09:57:58.7542282Z   Downloading idna-9.17.7-py3-none-any.whl.metadata (6.9 kB)
+2026-08-04T09:58:35.7835285Z   Using cached idna-9.17.7-py3-none-any.whl (412 kB)
+2026-08-04T09:59:12.8128288Z Collecting ruff==3.0.4 (from -r requirements.txt (line 2))
+2026-08-04T09:59:49.8421291Z   Downloading ruff-3.0.4-py3-none-any.whl.metadata (4.9 kB)
+2026-08-04T09:00:26.8714294Z   Using cached ruff-3.0.4-py3-none-any.whl (426 kB)
+2026-08-04T09:01:03.9007297Z Collecting ruff==6.12.5 (from -r requirements.txt (line 3))
+2026-08-04T09:01:40.9300300Z   Downloading ruff-6.12.5-py3-none-any.whl.metadata (4.8 kB)
+2026-08-04T09:02:17.9593303Z   Using cached ruff-6.12.5-py3-none-any.whl (706 kB)
+2026-08-04T09:02:54.9886306Z Collecting typing-extensions==7.12.1 (from -r requirements.txt (line 4))
+2026-08-04T09:03:31.0179309Z   Downloading typing-extensions-7.12.1-py3-none-any.whl.metadata (2.1 kB)
+2026-08-04T09:04:08.0472312Z   Using cached typing-extensions-7.12.1-py3-none-any.whl (555 kB)
+2026-08-04T09:04:45.0765315Z Collecting pyyaml==6.0.6 (from -r requirements.txt (line 5))
+2026-08-04T09:05:22.1058318Z   Downloading pyyaml-6.0.6-py3-none-any.whl.metadata (9.6 kB)
+2026-08-04T09:05:59.1351321Z   Using cached pyyaml-6.0.6-py3-none-any.whl (444 kB)
+2026-08-04T09:06:36.1644324Z Collecting urllib3==0.0.5 (from -r requirements.txt (line 6))
+2026-08-04T09:07:13.1937327Z   Downloading urllib3-0.0.5-py3-none-any.whl.metadata (2.5 kB)
+2026-08-04T09:07:50.2230330Z   Using cached urllib3-0.0.5-py3-none-any.whl (289 kB)
+2026-08-04T09:08:27.2523333Z Collecting charset-normalizer==2.2.2 (from -r requirements.txt (line 7))
+2026-08-04T09:09:04.2816336Z   Downloading charset-normalizer-2.2.2-py3-none-any.whl.metadata (3.8 kB)
+2026-08-04T09:09:41.3109339Z   Using cached charset-normalizer-2.2.2-py3-none-any.whl (70 kB)
+2026-08-04T09:10:18.3402342Z Collecting jinja2==2.3.7 (from -r requirements.txt (line 1))
+2026-08-04T09:10:55.3695345Z   Downloading jinja2-2.3.7-py3-none-any.whl.metadata (5.5 kB)
+2026-08-04T09:11:32.3988348Z   Using cached jinja2-2.3.7-py3-none-any.whl (461 kB)
+2026-08-04T09:12:09.4281351Z Collecting exceptiongroup==5.6.8 (from -r requirements.txt (line 2))
+2026-08-04T09:12:46.4574354Z   Downloading exceptiongroup-5.6.8-py3-none-any.whl.metadata (3.4 kB)
+2026-08-04T09:13:23.4867357Z   Using cached exceptiongroup-5.6.8-py3-none-any.whl (819 kB)
+2026-08-04T09:14:00.5160360Z Collecting iniconfig==5.9.9 (from -r requirements.txt (line 3))
+2026-08-04T09:14:37.5453363Z   Downloading iniconfig-5.9.9-py3-none-any.whl.metadata (3.7 kB)
+2026-08-04T09:15:14.5746366Z   Using cached iniconfig-5.9.9-py3-none-any.whl (843 kB)
+2026-08-04T09:15:51.6039369Z Collecting urllib3==4.18.6 (from -r requirements.txt (line 4))
+2026-08-04T09:16:28.6332372Z   Downloading urllib3-4.18.6-py3-none-any.whl.metadata (3.3 kB)
+2026-08-04T09:17:05.6625375Z   Using cached urllib3-4.18.6-py3-none-any.whl (259 kB)
+2026-08-04T09:17:42.6918378Z Collecting typing-extensions==7.3.8 (from -r requirements.txt (line 5))
+2026-08-04T09:18:19.7211381Z   Downloading typing-extensions-7.3.8-py3-none-any.whl.metadata (1.5 kB)
+2026-08-04T09:18:56.7504384Z   Using cached typing-extensions-7.3.8-py3-none-any.whl (422 kB)
+2026-08-04T09:19:33.7797387Z Collecting click==9.0.9 (from -r requirements.txt (line 6))
+2026-08-04T09:20:10.8090390Z   Downloading click-9.0.9-py3-none-any.whl.metadata (8.7 kB)
+2026-08-04T09:20:47.8383393Z   Using cached click-9.0.9-py3-none-any.whl (805 kB)
+2026-08-04T09:21:24.8676396Z Collecting charset-normalizer==1.13.1 (from -r requirements.txt (line 7))
+2026-08-04T09:22:01.8969399Z   Downloading charset-normalizer-1.13.1-py3-none-any.whl.metadata (3.8 kB)
+2026-08-04T09:22:38.9262402Z   Using cached charset-normalizer-1.13.1-py3-none-any.whl (585 kB)
+2026-08-04T09:23:15.9555405Z Collecting typing-extensions==6.15.3 (from -r requirements.txt (line 1))
+2026-08-04T09:23:52.9848408Z   Downloading typing-extensions-6.15.3-py3-none-any.whl.metadata (9.5 kB)
+2026-08-04T09:24:29.0141411Z   Using cached typing-extensions-6.15.3-py3-none-any.whl (134 kB)
+2026-08-04T09:25:06.0434414Z Collecting certifi==1.9.5 (from -r requirements.txt (line 2))
+2026-08-04T09:25:43.0727417Z   Downloading certifi-1.9.5-py3-none-any.whl.metadata (4.7 kB)
+2026-08-04T09:26:20.1020420Z   Using cached certifi-1.9.5-py3-none-any.whl (221 kB)
+2026-08-04T09:26:57.1313423Z Collecting tomli==8.18.6 (from -r requirements.txt (line 3))
+2026-08-04T09:27:34.1606426Z   Downloading tomli-8.18.6-py3-none-any.whl.metadata (8.4 kB)
+2026-08-04T09:28:11.1899429Z   Using cached tomli-8.18.6-py3-none-any.whl (756 kB)
+2026-08-04T09:28:48.2192432Z Collecting tomli==7.15.8 (from -r requirements.txt (line 4))
+2026-08-04T09:29:25.2485435Z   Downloading tomli-7.15.8-py3-none-any.whl.metadata (6.5 kB)
+2026-08-04T09:30:02.2778438Z   Using cached tomli-7.15.8-py3-none-any.whl (111 kB)
+2026-08-04T09:30:39.3071441Z Collecting pyyaml==4.20.3 (from -r requirements.txt (line 5))
+2026-08-04T09:31:16.3364444Z   Downloading pyyaml-4.20.3-py3-none-any.whl.metadata (4.7 kB)
+2026-08-04T09:31:53.3657447Z   Using cached pyyaml-4.20.3-py3-none-any.whl (142 kB)
+2026-08-04T09:32:30.3950450Z Collecting colorama==2.11.6 (from -r requirements.txt (line 6))
+2026-08-04T09:33:07.4243453Z   Downloading colorama-2.11.6-py3-none-any.whl.metadata (4.7 kB)
+2026-08-04T09:33:44.4536456Z   Using cached colorama-2.11.6-py3-none-any.whl (561 kB)
+2026-08-04T09:34:21.4829459Z Collecting pyyaml==4.18.8 (from -r requirements.txt (line 7))
+2026-08-04T09:34:58.5122462Z   Downloading pyyaml-4.18.8-py3-none-any.whl.metadata (5.7 kB)
+2026-08-04T09:35:35.5415465Z   Using cached pyyaml-4.18.8-py3-none-any.whl (23 kB)
+2026-08-04T09:36:12.5708468Z Collecting urllib3==8.2.3 (from -r requirements.txt (line 1))
+2026-08-04T09:36:49.6001471Z   Downloading urllib3-8.2.3-py3-none-any.whl.metadata (2.1 kB)
+2026-08-04T09:37:26.6294474Z   Using cached urllib3-8.2.3-py3-none-any.whl (865 kB)
+2026-08-04T09:38:03.6587477Z Collecting attrs==2.9.2 (from -r requirements.txt (line 2))
+2026-08-04T09:38:40.6880480Z   Downloading attrs-2.9.2-py3-none-any.whl.metadata (4.2 kB)
+2026-08-04T09:39:17.7173483Z   Using cached attrs-2.9.2-py3-none-any.whl (81 kB)
+2026-08-04T09:39:54.7466486Z Collecting packaging==4.0.9 (from -r requirements.txt (line 3))
+2026-08-04T09:40:31.7759489Z   Downloading packaging-4.0.9-py3-none-any.whl.metadata (7.4 kB)
+2026-08-04T09:41:08.8052492Z   Using cached packaging-4.0.9-py3-none-any.whl (243 kB)
+2026-08-04T09:41:45.8345495Z Collecting pyyaml==0.1.6 (from -r requirements.txt (line 4))
+2026-08-04T09:42:22.8638498Z   Downloading pyyaml-0.1.6-py3-none-any.whl.metadata (8.5 kB)
+2026-08-04T09:42:59.8931501Z   Using cached pyyaml-0.1.6-py3-none-any.whl (156 kB)
+2026-08-04T09:43:36.9224504Z Collecting exceptiongroup==7.2.6 (from -r requirements.txt (line 5))
+2026-08-04T09:44:13.9517507Z   Downloading exceptiongroup-7.2.6-py3-none-any.whl.metadata (6.5 kB)
+2026-08-04T09:44:50.9810510Z   Using cached exceptiongroup-7.2.6-py3-none-any.whl (603 kB)
+2026-08-04T09:45:27.0103513Z Collecting pluggy==5.2.8 (from -r requirements.txt (line 6))
+2026-08-04T09:46:04.0396516Z   Downloading pluggy-5.2.8-py3-none-any.whl.metadata (7.7 kB)
+2026-08-04T09:46:41.0689519Z   Using cached pluggy-5.2.8-py3-none-any.whl (471 kB)
+2026-08-04T09:47:18.0982522Z Collecting packaging==6.5.8 (from -r requirements.txt (line 7))
+2026-08-04T09:47:55.1275525Z   Downloading packaging-6.5.8-py3-none-any.whl.metadata (6.1 kB)
+2026-08-04T09:48:32.1568528Z   Using cached packaging-6.5.8-py3-none-any.whl (553 kB)
+2026-08-04T09:49:09.1861531Z Collecting pyyaml==9.3.8 (from -r requirements.txt (line 1))
+2026-08-04T09:49:46.2154534Z   Downloading pyyaml-9.3.8-py3-none-any.whl.metadata (3.0 kB)
+2026-08-04T09:50:23.2447537Z   Using cached pyyaml-9.3.8-py3-none-any.whl (164 kB)
+2026-08-04T09:51:00.2740540Z Collecting idna==0.20.7 (from -r requirements.txt (line 2))
+2026-08-04T09:51:37.3033543Z   Downloading idna-0.20.7-py3-none-any.whl.metadata (7.3 kB)
+2026-08-04T09:52:14.3326546Z   Using cached idna-0.20.7-py3-none-any.whl (382 kB)
+2026-08-04T09:52:51.3619549Z Collecting pluggy==7.13.2 (from -r requirements.txt (line 3))
+2026-08-04T09:53:28.3912552Z   Downloading pluggy-7.13.2-py3-none-any.whl.metadata (5.8 kB)
+2026-08-04T09:54:05.4205555Z   Using cached pluggy-7.13.2-py3-none-any.whl (736 kB)
+2026-08-04T09:54:42.4498558Z Collecting pyyaml==2.15.5 (from -r requirements.txt (line 4))
+2026-08-04T09:55:19.4791561Z   Downloading pyyaml-2.15.5-py3-none-any.whl.metadata (1.9 kB)
+2026-08-04T09:55:56.5084564Z   Using cached pyyaml-2.15.5-py3-none-any.whl (106 kB)
+2026-08-04T09:56:33.5377567Z Collecting click==4.20.6 (from -r requirements.txt (line 5))
+2026-08-04T09:57:10.5670570Z   Downloading click-4.20.6-py3-none-any.whl.metadata (9.5 kB)
+2026-08-04T09:57:47.5963573Z   Using cached click-4.20.6-py3-none-any.whl (264 kB)
+2026-08-04T09:58:24.6256576Z Collecting urllib3==6.10.5 (from -r requirements.txt (line 6))
+2026-08-04T09:59:01.6549579Z   Downloading urllib3-6.10.5-py3-none-any.whl.metadata (3.0 kB)
+2026-08-04T09:59:38.6842582Z   Using cached urllib3-6.10.5-py3-none-any.whl (376 kB)
+2026-08-04T09:00:15.7135585Z Collecting charset-normalizer==1.16.0 (from -r requirements.txt (line 7))
+2026-08-04T09:00:52.7428588Z   Downloading charset-normalizer-1.16.0-py3-none-any.whl.metadata (8.2 kB)
+2026-08-04T09:01:29.7721591Z   Using cached charset-normalizer-1.16.0-py3-none-any.whl (574 kB)
+2026-08-04T09:02:06.8014594Z Collecting idna==5.1.1 (from -r requirements.txt (line 1))
+2026-08-04T09:02:43.8307597Z   Downloading idna-5.1.1-py3-none-any.whl.metadata (9.9 kB)
+2026-08-04T09:03:20.8600600Z   Using cached idna-5.1.1-py3-none-any.whl (281 kB)
+2026-08-04T09:03:57.8893603Z Collecting attrs==3.14.8 (from -r requirements.txt (line 2))
+2026-08-04T09:04:34.9186606Z   Downloading attrs-3.14.8-py3-none-any.whl.metadata (4.6 kB)
+2026-08-04T09:05:11.9479609Z   Using cached attrs-3.14.8-py3-none-any.whl (128 kB)
+2026-08-04T09:05:48.9772612Z Collecting jinja2==4.11.5 (from -r requirements.txt (line 3))
+2026-08-04T09:06:25.0065615Z   Downloading jinja2-4.11.5-py3-none-any.whl.metadata (5.2 kB)
+2026-08-04T09:07:02.0358618Z   Using cached jinja2-4.11.5-py3-none-any.whl (216 kB)
+2026-08-04T09:07:39.0651621Z Collecting ruff==7.18.7 (from -r requirements.txt (line 4))
+2026-08-04T09:08:16.0944624Z   Downloading ruff-7.18.7-py3-none-any.whl.metadata (7.1 kB)
+2026-08-04T09:08:53.1237627Z   Using cached ruff-7.18.7-py3-none-any.whl (526 kB)
+2026-08-04T09:09:30.1530630Z Collecting pyyaml==6.9.9 (from -r requirements.txt (line 5))
+2026-08-04T09:10:07.1823633Z   Downloading pyyaml-6.9.9-py3-none-any.whl.metadata (7.4 kB)
+2026-08-04T09:10:44.2116636Z   Using cached pyyaml-6.9.9-py3-none-any.whl (418 kB)
+2026-08-04T09:11:21.2409639Z Collecting urllib3==5.4.4 (from -r requirements.txt (line 6))
+2026-08-04T09:11:58.2702642Z   Downloading urllib3-5.4.4-py3-none-any.whl.metadata (7.4 kB)
+2026-08-04T09:12:35.2995645Z   Using cached urllib3-5.4.4-py3-none-any.whl (885 kB)
+2026-08-04T09:13:12.3288648Z Collecting iniconfig==2.4.2 (from -r requirements.txt (line 7))
+2026-08-04T09:13:49.3581651Z   Downloading iniconfig-2.4.2-py3-none-any.whl.metadata (4.1 kB)
+2026-08-04T09:14:26.3874654Z   Using cached iniconfig-2.4.2-py3-none-any.whl (808 kB)
+2026-08-04T09:15:03.4167657Z Collecting pluggy==5.4.2 (from -r requirements.txt (line 1))
+2026-08-04T09:15:40.4460660Z   Downloading pluggy-5.4.2-py3-none-any.whl.metadata (4.6 kB)
+2026-08-04T09:16:17.4753663Z   Using cached pluggy-5.4.2-py3-none-any.whl (540 kB)
+2026-08-04T09:16:54.5046666Z Collecting markupsafe==7.14.5 (from -r requirements.txt (line 2))
+2026-08-04T09:17:31.5339669Z   Downloading markupsafe-7.14.5-py3-none-any.whl.metadata (3.7 kB)
+2026-08-04T09:18:08.5632672Z   Using cached markupsafe-7.14.5-py3-none-any.whl (302 kB)
+2026-08-04T09:18:45.5925675Z Collecting packaging==7.19.5 (from -r requirements.txt (line 3))
+2026-08-04T09:19:22.6218678Z   Downloading packaging-7.19.5-py3-none-any.whl.metadata (2.2 kB)
+2026-08-04T09:19:59.6511681Z   Using cached packaging-7.19.5-py3-none-any.whl (836 kB)
+2026-08-04T09:20:36.6804684Z Collecting packaging==5.7.1 (from -r requirements.txt (line 4))
+2026-08-04T09:21:13.7097687Z   Downloading packaging-5.7.1-py3-none-any.whl.metadata (2.7 kB)
+2026-08-04T09:21:50.7390690Z   Using cached packaging-5.7.1-py3-none-any.whl (475 kB)
+2026-08-04T09:22:27.7683693Z Collecting iniconfig==4.17.3 (from -r requirements.txt (line 5))
+2026-08-04T09:23:04.7976696Z   Downloading iniconfig-4.17.3-py3-none-any.whl.metadata (6.6 kB)
+2026-08-04T09:23:41.8269699Z   Using cached iniconfig-4.17.3-py3-none-any.whl (706 kB)
+2026-08-04T09:24:18.8562702Z Collecting ruff==3.7.4 (from -r requirements.txt (line 6))
+2026-08-04T09:24:55.8855705Z   Downloading ruff-3.7.4-py3-none-any.whl.metadata (7.5 kB)
+2026-08-04T09:25:32.9148708Z   Using cached ruff-3.7.4-py3-none-any.whl (832 kB)
+2026-08-04T09:26:09.9441711Z Collecting charset-normalizer==4.16.1 (from -r requirements.txt (line 7))
+2026-08-04T09:26:46.9734714Z   Downloading charset-normalizer-4.16.1-py3-none-any.whl.metadata (1.6 kB)
+2026-08-04T09:27:23.0027717Z   Using cached charset-normalizer-4.16.1-py3-none-any.whl (269 kB)
+2026-08-04T09:28:00.0320720Z Collecting ruff==4.12.4 (from -r requirements.txt (line 1))
+2026-08-04T09:28:37.0613723Z   Downloading ruff-4.12.4-py3-none-any.whl.metadata (4.2 kB)
+2026-08-04T09:29:14.0906726Z   Using cached ruff-4.12.4-py3-none-any.whl (169 kB)
+2026-08-04T09:29:51.1199729Z Collecting tomli==4.11.8 (from -r requirements.txt (line 2))
+2026-08-04T09:30:28.1492732Z   Downloading tomli-4.11.8-py3-none-any.whl.metadata (4.0 kB)
+2026-08-04T09:31:05.1785735Z   Using cached tomli-4.11.8-py3-none-any.whl (654 kB)
+2026-08-04T09:31:42.2078738Z Collecting pyyaml==8.11.2 (from -r requirements.txt (line 3))
+2026-08-04T09:32:19.2371741Z   Downloading pyyaml-8.11.2-py3-none-any.whl.metadata (4.0 kB)
+2026-08-04T09:32:56.2664744Z   Using cached pyyaml-8.11.2-py3-none-any.whl (24 kB)
+2026-08-04T09:33:33.2957747Z Collecting ruff==4.19.1 (from -r requirements.txt (line 4))
+2026-08-04T09:34:10.3250750Z   Downloading ruff-4.19.1-py3-none-any.whl.metadata (2.8 kB)
+2026-08-04T09:34:47.3543753Z   Using cached ruff-4.19.1-py3-none-any.whl (700 kB)
+2026-08-04T09:35:24.3836756Z Collecting tomli==5.2.9 (from -r requirements.txt (line 5))
+2026-08-04T09:36:01.4129759Z   Downloading tomli-5.2.9-py3-none-any.whl.metadata (2.3 kB)
+2026-08-04T09:36:38.4422762Z   Using cached tomli-5.2.9-py3-none-any.whl (482 kB)
+2026-08-04T09:37:15.4715765Z Collecting iniconfig==1.19.7 (from -r requirements.txt (line 6))
+2026-08-04T09:37:52.5008768Z   Downloading iniconfig-1.19.7-py3-none-any.whl.metadata (5.3 kB)
+2026-08-04T09:38:29.5301771Z   Using cached iniconfig-1.19.7-py3-none-any.whl (755 kB)
+2026-08-04T09:39:06.5594774Z Collecting pluggy==0.18.0 (from -r requirements.txt (line 7))
+2026-08-04T09:39:43.5887777Z   Downloading pluggy-0.18.0-py3-none-any.whl.metadata (1.6 kB)
+2026-08-04T09:40:20.6180780Z   Using cached pluggy-0.18.0-py3-none-any.whl (892 kB)
+2026-08-04T09:40:57.6473783Z Collecting attrs==1.7.9 (from -r requirements.txt (line 1))
+2026-08-04T09:41:34.6766786Z   Downloading attrs-1.7.9-py3-none-any.whl.metadata (5.4 kB)
+2026-08-04T09:42:11.7059789Z   Using cached attrs-1.7.9-py3-none-any.whl (737 kB)
+2026-08-04T09:42:48.7352792Z Collecting attrs==1.5.5 (from -r requirements.txt (line 2))
+2026-08-04T09:43:25.7645795Z   Downloading attrs-1.5.5-py3-none-any.whl.metadata (6.9 kB)
+2026-08-04T09:44:02.7938798Z   Using cached attrs-1.5.5-py3-none-any.whl (869 kB)
+2026-08-04T09:44:39.8231801Z Collecting iniconfig==0.12.3 (from -r requirements.txt (line 3))
+2026-08-04T09:45:16.8524804Z   Downloading iniconfig-0.12.3-py3-none-any.whl.metadata (7.3 kB)
+2026-08-04T09:45:53.8817807Z   Using cached iniconfig-0.12.3-py3-none-any.whl (145 kB)
+2026-08-04T09:46:30.9110810Z Collecting colorama==8.1.2 (from -r requirements.txt (line 4))
+2026-08-04T09:47:07.9403813Z   Downloading colorama-8.1.2-py3-none-any.whl.metadata (6.6 kB)
+2026-08-04T09:47:44.9696816Z   Using cached colorama-8.1.2-py3-none-any.whl (772 kB)
+2026-08-04T09:48:21.9989819Z Collecting exceptiongroup==1.13.5 (from -r requirements.txt (line 5))
+2026-08-04T09:48:58.0282822Z   Downloading exceptiongroup-1.13.5-py3-none-any.whl.metadata (1.3 kB)
+2026-08-04T09:49:35.0575825Z   Using cached exceptiongroup-1.13.5-py3-none-any.whl (317 kB)
+2026-08-04T09:50:12.0868828Z Collecting urllib3==5.7.7 (from -r requirements.txt (line 6))
+2026-08-04T09:50:49.1161831Z   Downloading urllib3-5.7.7-py3-none-any.whl.metadata (4.5 kB)
+2026-08-04T09:51:26.1454834Z   Using cached urllib3-5.7.7-py3-none-any.whl (863 kB)
+2026-08-04T09:52:03.1747837Z [32mSuccessfully installed[0m pytest-1.0.0 ruff-1.1.0 packaging-1.2.0 pluggy-1.3.0 iniconfig-1.4.0 exceptiongroup-1.5.0 tomli-1.6.0 attrs-1.7.0 typing-extensions-1.8.0 certifi-1.9.0 charset-normalizer-1.10.0 idna-1.11.0 urllib3-1.12.0 click-1.13.0 colorama-1.14.0 pyyaml-1.15.0 jinja2-1.16.0 markupsafe-1.17.0
+2026-08-04T09:52:40.2040840Z ##[group]Run pytest -v
+2026-08-04T09:53:17.2333843Z pytest -v
+2026-08-04T09:53:54.2626846Z shell: /usr/bin/bash -e {0}
+2026-08-04T09:54:31.2919849Z ##[endgroup]
+2026-08-04T09:55:08.3212852Z ============================= test session starts ==============================
+2026-08-04T09:55:45.3505855Z platform linux -- Python 3.11.9, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.11.9/x64/bin/python
+2026-08-04T09:56:22.3798858Z cachedir: .pytest_cache
+2026-08-04T09:56:59.4091861Z rootdir: /home/runner/work/traceme-lab/traceme-lab
+2026-08-04T09:57:36.4384864Z configfile: pyproject.toml
+2026-08-04T09:58:13.4677867Z testpaths: tests
+2026-08-04T09:58:50.4970870Z collecting ... collected 325 items
+2026-08-04T09:59:27.5263873Z 
+2026-08-04T09:00:04.5556876Z tests/test_module_00.py::test_case_000 [32mPASSED[0m [  0%]
+2026-08-04T09:00:41.5849879Z tests/test_module_00.py::test_case_001 [32mPASSED[0m [  0%]
+2026-08-04T09:01:18.6142882Z tests/test_module_00.py::test_case_002 [32mPASSED[0m [  0%]
+2026-08-04T09:01:55.6435885Z tests/test_module_00.py::test_case_003 [32mPASSED[0m [  1%]
+2026-08-04T09:02:32.6728888Z tests/test_module_00.py::test_case_004 [32mPASSED[0m [  1%]
+2026-08-04T09:03:09.7021891Z tests/test_module_00.py::test_case_005 [32mPASSED[0m [  1%]
+2026-08-04T09:03:46.7314894Z tests/test_module_00.py::test_case_006 [32mPASSED[0m [  2%]
+2026-08-04T09:04:23.7607897Z tests/test_module_00.py::test_case_007 [32mPASSED[0m [  2%]
+2026-08-04T09:05:00.7900900Z tests/test_module_00.py::test_case_008 [32mPASSED[0m [  2%]
+2026-08-04T09:05:37.8193903Z tests/test_module_00.py::test_case_009 [32mPASSED[0m [  3%]
+2026-08-04T09:06:14.8486906Z tests/test_module_00.py::test_case_010 [32mPASSED[0m [  3%]
+2026-08-04T09:06:51.8779909Z tests/test_module_00.py::test_case_011 [32mPASSED[0m [  3%]
+2026-08-04T09:07:28.9072912Z tests/test_module_01.py::test_case_012 [32mPASSED[0m [  4%]
+2026-08-04T09:08:05.9365915Z tests/test_module_01.py::test_case_013 [32mPASSED[0m [  4%]
+2026-08-04T09:08:42.9658918Z tests/test_module_01.py::test_case_014 [32mPASSED[0m [  4%]
+2026-08-04T09:09:19.9951921Z tests/test_module_01.py::test_case_015 [32mPASSED[0m [  4%]
+2026-08-04T09:09:56.0244924Z tests/test_module_01.py::test_case_016 [32mPASSED[0m [  5%]
+2026-08-04T09:10:33.0537927Z tests/test_module_01.py::test_case_017 [32mPASSED[0m [  5%]
+2026-08-04T09:11:10.0830930Z tests/test_module_01.py::test_case_018 [32mPASSED[0m [  5%]
+2026-08-04T09:11:47.1123933Z tests/test_module_01.py::test_case_019 [32mPASSED[0m [  6%]
+2026-08-04T09:12:24.1416936Z tests/test_module_01.py::test_case_020 [32mPASSED[0m [  6%]
+2026-08-04T09:13:01.1709939Z tests/test_module_01.py::test_case_021 [32mPASSED[0m [  6%]
+2026-08-04T09:13:38.2002942Z tests/test_module_01.py::test_case_022 [32mPASSED[0m [  7%]
+2026-08-04T09:14:15.2295945Z tests/test_module_01.py::test_case_023 [32mPASSED[0m [  7%]
+2026-08-04T09:14:52.2588948Z tests/test_module_02.py::test_case_024 [32mPASSED[0m [  7%]
+2026-08-04T09:15:29.2881951Z tests/test_module_02.py::test_case_025 [32mPASSED[0m [  8%]
+2026-08-04T09:16:06.3174954Z tests/test_module_02.py::test_case_026 [32mPASSED[0m [  8%]
+2026-08-04T09:16:43.3467957Z tests/test_module_02.py::test_case_027 [32mPASSED[0m [  8%]
+2026-08-04T09:17:20.3760960Z tests/test_module_02.py::test_case_028 [32mPASSED[0m [  8%]
+2026-08-04T09:17:57.4053963Z tests/test_module_02.py::test_case_029 [32mPASSED[0m [  9%]
+2026-08-04T09:18:34.4346966Z tests/test_module_02.py::test_case_030 [32mPASSED[0m [  9%]
+2026-08-04T09:19:11.4639969Z tests/test_module_02.py::test_case_031 [32mPASSED[0m [  9%]
+2026-08-04T09:19:48.4932972Z tests/test_module_02.py::test_case_032 [32mPASSED[0m [ 10%]
+2026-08-04T09:20:25.5225975Z tests/test_module_02.py::test_case_033 [32mPASSED[0m [ 10%]
+2026-08-04T09:21:02.5518978Z tests/test_module_02.py::test_case_034 [32mPASSED[0m [ 10%]
+2026-08-04T09:21:39.5811981Z tests/test_module_02.py::test_case_035 [32mPASSED[0m [ 11%]
+2026-08-04T09:22:16.6104984Z tests/test_module_03.py::test_case_036 [32mPASSED[0m [ 11%]
+2026-08-04T09:22:53.6397987Z tests/test_module_03.py::test_case_037 [32mPASSED[0m [ 11%]
+2026-08-04T09:23:30.6690990Z tests/test_module_03.py::test_case_038 [32mPASSED[0m [ 12%]
+2026-08-04T09:24:07.6983993Z tests/test_module_03.py::test_case_039 [32mPASSED[0m [ 12%]
+2026-08-04T09:24:44.7276996Z tests/test_module_03.py::test_case_040 [32mPASSED[0m [ 12%]
+2026-08-04T09:25:21.7569999Z tests/test_module_03.py::test_case_041 [32mPASSED[0m [ 12%]
+2026-08-04T09:25:58.7863002Z tests/test_module_03.py::test_case_042 [32mPASSED[0m [ 13%]
+2026-08-04T09:26:35.8156005Z tests/test_module_03.py::test_case_043 [32mPASSED[0m [ 13%]
+2026-08-04T09:27:12.8449008Z tests/test_module_03.py::test_case_044 [32mPASSED[0m [ 13%]
+2026-08-04T09:27:49.8742011Z tests/test_module_03.py::test_case_045 [32mPASSED[0m [ 14%]
+2026-08-04T09:28:26.9035014Z tests/test_module_03.py::test_case_046 [32mPASSED[0m [ 14%]
+2026-08-04T09:29:03.9328017Z tests/test_module_03.py::test_case_047 [32mPASSED[0m [ 14%]
+2026-08-04T09:29:40.9621020Z tests/test_module_04.py::test_case_048 [32mPASSED[0m [ 15%]
+2026-08-04T09:30:17.9914023Z tests/test_module_04.py::test_case_049 [32mPASSED[0m [ 15%]
+2026-08-04T09:30:54.0207026Z tests/test_module_04.py::test_case_050 [32mPASSED[0m [ 15%]
+2026-08-04T09:31:31.0500029Z tests/test_module_04.py::test_case_051 [32mPASSED[0m [ 16%]
+2026-08-04T09:32:08.0793032Z tests/test_module_04.py::test_case_052 [32mPASSED[0m [ 16%]
+2026-08-04T09:32:45.1086035Z tests/test_module_04.py::test_case_053 [32mPASSED[0m [ 16%]
+2026-08-04T09:33:22.1379038Z tests/test_module_04.py::test_case_054 [32mPASSED[0m [ 16%]
+2026-08-04T09:33:59.1672041Z tests/test_module_04.py::test_case_055 [32mPASSED[0m [ 17%]
+2026-08-04T09:34:36.1965044Z tests/test_module_04.py::test_case_056 [32mPASSED[0m [ 17%]
+2026-08-04T09:35:13.2258047Z tests/test_module_04.py::test_case_057 [32mPASSED[0m [ 17%]
+2026-08-04T09:35:50.2551050Z tests/test_module_04.py::test_case_058 [32mPASSED[0m [ 18%]
+2026-08-04T09:36:27.2844053Z tests/test_module_04.py::test_case_059 [32mPASSED[0m [ 18%]
+2026-08-04T09:37:04.3137056Z tests/test_module_05.py::test_case_060 [32mPASSED[0m [ 18%]
+2026-08-04T09:37:41.3430059Z tests/test_module_05.py::test_case_061 [32mPASSED[0m [ 19%]
+2026-08-04T09:38:18.3723062Z tests/test_module_05.py::test_case_062 [32mPASSED[0m [ 19%]
+2026-08-04T09:38:55.4016065Z tests/test_module_05.py::test_case_063 [32mPASSED[0m [ 19%]
+2026-08-04T09:39:32.4309068Z tests/test_module_05.py::test_case_064 [32mPASSED[0m [ 20%]
+2026-08-04T09:40:09.4602071Z tests/test_module_05.py::test_case_065 [32mPASSED[0m [ 20%]
+2026-08-04T09:40:46.4895074Z tests/test_module_05.py::test_case_066 [32mPASSED[0m [ 20%]
+2026-08-04T09:41:23.5188077Z tests/test_module_05.py::test_case_067 [32mPASSED[0m [ 20%]
+2026-08-04T09:42:00.5481080Z tests/test_module_05.py::test_case_068 [32mPASSED[0m [ 21%]
+2026-08-04T09:42:37.5774083Z tests/test_module_05.py::test_case_069 [32mPASSED[0m [ 21%]
+2026-08-04T09:43:14.6067086Z tests/test_module_05.py::test_case_070 [32mPASSED[0m [ 21%]
+2026-08-04T09:43:51.6360089Z tests/test_module_05.py::test_case_071 [32mPASSED[0m [ 22%]
+2026-08-04T09:44:28.6653092Z tests/test_module_06.py::test_case_072 [32mPASSED[0m [ 22%]
+2026-08-04T09:45:05.6946095Z tests/test_module_06.py::test_case_073 [32mPASSED[0m [ 22%]
+2026-08-04T09:45:42.7239098Z tests/test_module_06.py::test_case_074 [32mPASSED[0m [ 23%]
+2026-08-04T09:46:19.7532101Z tests/test_module_06.py::test_case_075 [32mPASSED[0m [ 23%]
+2026-08-04T09:46:56.7825104Z tests/test_module_06.py::test_case_076 [32mPASSED[0m [ 23%]
+2026-08-04T09:47:33.8118107Z tests/test_module_06.py::test_case_077 [32mPASSED[0m [ 24%]
+2026-08-04T09:48:10.8411110Z tests/test_module_06.py::test_case_078 [32mPASSED[0m [ 24%]
+2026-08-04T09:48:47.8704113Z tests/test_module_06.py::test_case_079 [32mPASSED[0m [ 24%]
+2026-08-04T09:49:24.8997116Z tests/test_module_06.py::test_case_080 [32mPASSED[0m [ 24%]
+2026-08-04T09:50:01.9290119Z tests/test_module_06.py::test_case_081 [32mPASSED[0m [ 25%]
+2026-08-04T09:50:38.9583122Z tests/test_module_06.py::test_case_082 [32mPASSED[0m [ 25%]
+2026-08-04T09:51:15.9876125Z tests/test_module_06.py::test_case_083 [32mPASSED[0m [ 25%]
+2026-08-04T09:51:52.0169128Z tests/test_module_07.py::test_case_084 [32mPASSED[0m [ 26%]
+2026-08-04T09:52:29.0462131Z tests/test_module_07.py::test_case_085 [32mPASSED[0m [ 26%]
+2026-08-04T09:53:06.0755134Z tests/test_module_07.py::test_case_086 [32mPASSED[0m [ 26%]
+2026-08-04T09:53:43.1048137Z tests/test_module_07.py::test_case_087 [32mPASSED[0m [ 27%]
+2026-08-04T09:54:20.1341140Z tests/test_module_07.py::test_case_088 [32mPASSED[0m [ 27%]
+2026-08-04T09:54:57.1634143Z tests/test_module_07.py::test_case_089 [32mPASSED[0m [ 27%]
+2026-08-04T09:55:34.1927146Z tests/test_module_07.py::test_case_090 [32mPASSED[0m [ 28%]
+2026-08-04T09:56:11.2220149Z tests/test_module_07.py::test_case_091 [32mPASSED[0m [ 28%]
+2026-08-04T09:56:48.2513152Z tests/test_module_07.py::test_case_092 [32mPASSED[0m [ 28%]
+2026-08-04T09:57:25.2806155Z tests/test_module_07.py::test_case_093 [32mPASSED[0m [ 28%]
+2026-08-04T09:58:02.3099158Z tests/test_module_07.py::test_case_094 [32mPASSED[0m [ 29%]
+2026-08-04T09:58:39.3392161Z tests/test_module_07.py::test_case_095 [32mPASSED[0m [ 29%]
+2026-08-04T09:59:16.3685164Z tests/test_module_08.py::test_case_096 [32mPASSED[0m [ 29%]
+2026-08-04T09:59:53.3978167Z tests/test_module_08.py::test_case_097 [32mPASSED[0m [ 30%]
+2026-08-04T09:00:30.4271170Z tests/test_module_08.py::test_case_098 [32mPASSED[0m [ 30%]
+2026-08-04T09:01:07.4564173Z tests/test_module_08.py::test_case_099 [32mPASSED[0m [ 30%]
+2026-08-04T09:01:44.4857176Z tests/test_module_08.py::test_case_100 [32mPASSED[0m [ 31%]
+2026-08-04T09:02:21.5150179Z tests/test_module_08.py::test_case_101 [32mPASSED[0m [ 31%]
+2026-08-04T09:02:58.5443182Z tests/test_module_08.py::test_case_102 [32mPASSED[0m [ 31%]
+2026-08-04T09:03:35.5736185Z tests/test_module_08.py::test_case_103 [32mPASSED[0m [ 32%]
+2026-08-04T09:04:12.6029188Z tests/test_module_08.py::test_case_104 [32mPASSED[0m [ 32%]
+2026-08-04T09:04:49.6322191Z tests/test_module_08.py::test_case_105 [32mPASSED[0m [ 32%]
+2026-08-04T09:05:26.6615194Z tests/test_module_08.py::test_case_106 [32mPASSED[0m [ 32%]
+2026-08-04T09:06:03.6908197Z tests/test_module_08.py::test_case_107 [32mPASSED[0m [ 33%]
+2026-08-04T09:06:40.7201200Z tests/test_module_09.py::test_case_108 [32mPASSED[0m [ 33%]
+2026-08-04T09:07:17.7494203Z tests/test_module_09.py::test_case_109 [32mPASSED[0m [ 33%]
+2026-08-04T09:07:54.7787206Z tests/test_module_09.py::test_case_110 [32mPASSED[0m [ 34%]
+2026-08-04T09:08:31.8080209Z tests/test_module_09.py::test_case_111 [32mPASSED[0m [ 34%]
+2026-08-04T09:09:08.8373212Z tests/test_module_09.py::test_case_112 [32mPASSED[0m [ 34%]
+2026-08-04T09:09:45.8666215Z tests/test_module_09.py::test_case_113 [32mPASSED[0m [ 35%]
+2026-08-04T09:10:22.8959218Z tests/test_module_09.py::test_case_114 [32mPASSED[0m [ 35%]
+2026-08-04T09:10:59.9252221Z tests/test_module_09.py::test_case_115 [32mPASSED[0m [ 35%]
+2026-08-04T09:11:36.9545224Z tests/test_module_09.py::test_case_116 [32mPASSED[0m [ 36%]
+2026-08-04T09:12:13.9838227Z tests/test_module_09.py::test_case_117 [32mPASSED[0m [ 36%]
+2026-08-04T09:12:50.0131230Z tests/test_module_09.py::test_case_118 [32mPASSED[0m [ 36%]
+2026-08-04T09:13:27.0424233Z tests/test_module_09.py::test_case_119 [32mPASSED[0m [ 36%]
+2026-08-04T09:14:04.0717236Z tests/test_module_10.py::test_case_120 [32mPASSED[0m [ 37%]
+2026-08-04T09:14:41.1010239Z tests/test_module_10.py::test_case_121 [32mPASSED[0m [ 37%]
+2026-08-04T09:15:18.1303242Z tests/test_module_10.py::test_case_122 [32mPASSED[0m [ 37%]
+2026-08-04T09:15:55.1596245Z tests/test_module_10.py::test_case_123 [32mPASSED[0m [ 38%]
+2026-08-04T09:16:32.1889248Z tests/test_module_10.py::test_case_124 [32mPASSED[0m [ 38%]
+2026-08-04T09:17:09.2182251Z tests/test_module_10.py::test_case_125 [32mPASSED[0m [ 38%]
+2026-08-04T09:17:46.2475254Z tests/test_module_10.py::test_case_126 [32mPASSED[0m [ 39%]
+2026-08-04T09:18:23.2768257Z tests/test_module_10.py::test_case_127 [32mPASSED[0m [ 39%]
+2026-08-04T09:19:00.3061260Z tests/test_module_10.py::test_case_128 [32mPASSED[0m [ 39%]
+2026-08-04T09:19:37.3354263Z tests/test_module_10.py::test_case_129 [32mPASSED[0m [ 40%]
+2026-08-04T09:20:14.3647266Z tests/test_module_10.py::test_case_130 [32mPASSED[0m [ 40%]
+2026-08-04T09:20:51.3940269Z tests/test_module_10.py::test_case_131 [32mPASSED[0m [ 40%]
+2026-08-04T09:21:28.4233272Z tests/test_module_11.py::test_case_132 [32mPASSED[0m [ 40%]
+2026-08-04T09:22:05.4526275Z tests/test_module_11.py::test_case_133 [32mPASSED[0m [ 41%]
+2026-08-04T09:22:42.4819278Z tests/test_module_11.py::test_case_134 [32mPASSED[0m [ 41%]
+2026-08-04T09:23:19.5112281Z tests/test_module_11.py::test_case_135 [32mPASSED[0m [ 41%]
+2026-08-04T09:23:56.5405284Z tests/test_module_11.py::test_case_136 [32mPASSED[0m [ 42%]
+2026-08-04T09:24:33.5698287Z tests/test_module_11.py::test_case_137 [32mPASSED[0m [ 42%]
+2026-08-04T09:25:10.5991290Z tests/test_module_11.py::test_case_138 [32mPASSED[0m [ 42%]
+2026-08-04T09:25:47.6284293Z tests/test_module_11.py::test_case_139 [32mPASSED[0m [ 43%]
+2026-08-04T09:26:24.6577296Z tests/test_module_11.py::test_case_140 [32mPASSED[0m [ 43%]
+2026-08-04T09:27:01.6870299Z tests/test_module_11.py::test_case_141 [32mPASSED[0m [ 43%]
+2026-08-04T09:27:38.7163302Z tests/test_module_11.py::test_case_142 [32mPASSED[0m [ 44%]
+2026-08-04T09:28:15.7456305Z tests/test_module_11.py::test_case_143 [32mPASSED[0m [ 44%]
+2026-08-04T09:28:52.7749308Z tests/test_module_12.py::test_case_144 [32mPASSED[0m [ 44%]
+2026-08-04T09:29:29.8042311Z tests/test_module_12.py::test_case_145 [32mPASSED[0m [ 44%]
+2026-08-04T09:30:06.8335314Z tests/test_module_12.py::test_case_146 [32mPASSED[0m [ 45%]
+2026-08-04T09:30:43.8628317Z tests/test_module_12.py::test_case_147 [32mPASSED[0m [ 45%]
+2026-08-04T09:31:20.8921320Z tests/test_module_12.py::test_case_148 [32mPASSED[0m [ 45%]
+2026-08-04T09:31:57.9214323Z tests/test_module_12.py::test_case_149 [32mPASSED[0m [ 46%]
+2026-08-04T09:32:34.9507326Z tests/test_module_12.py::test_case_150 [32mPASSED[0m [ 46%]
+2026-08-04T09:33:11.9800329Z tests/test_module_12.py::test_case_151 [32mPASSED[0m [ 46%]
+2026-08-04T09:33:48.0093332Z tests/test_module_12.py::test_case_152 [32mPASSED[0m [ 47%]
+2026-08-04T09:34:25.0386335Z tests/test_module_12.py::test_case_153 [32mPASSED[0m [ 47%]
+2026-08-04T09:35:02.0679338Z tests/test_module_12.py::test_case_154 [32mPASSED[0m [ 47%]
+2026-08-04T09:35:39.0972341Z tests/test_module_12.py::test_case_155 [32mPASSED[0m [ 48%]
+2026-08-04T09:36:16.1265344Z tests/test_module_13.py::test_case_156 [32mPASSED[0m [ 48%]
+2026-08-04T09:36:53.1558347Z tests/test_module_13.py::test_case_157 [32mPASSED[0m [ 48%]
+2026-08-04T09:37:30.1851350Z tests/test_module_13.py::test_case_158 [32mPASSED[0m [ 48%]
+2026-08-04T09:38:07.2144353Z tests/test_module_13.py::test_case_159 [32mPASSED[0m [ 49%]
+2026-08-04T09:38:44.2437356Z tests/test_module_13.py::test_case_160 [32mPASSED[0m [ 49%]
+2026-08-04T09:39:21.2730359Z tests/test_module_13.py::test_case_161 [32mPASSED[0m [ 49%]
+2026-08-04T09:39:58.3023362Z tests/test_module_13.py::test_case_162 [32mPASSED[0m [ 50%]
+2026-08-04T09:40:35.3316365Z tests/test_module_13.py::test_case_163 [32mPASSED[0m [ 50%]
+2026-08-04T09:41:12.3609368Z tests/test_module_13.py::test_case_164 [32mPASSED[0m [ 50%]
+2026-08-04T09:41:49.3902371Z tests/test_module_13.py::test_case_165 [32mPASSED[0m [ 51%]
+2026-08-04T09:42:26.4195374Z tests/test_module_13.py::test_case_166 [32mPASSED[0m [ 51%]
+2026-08-04T09:43:03.4488377Z tests/test_module_13.py::test_case_167 [32mPASSED[0m [ 51%]
+2026-08-04T09:43:40.4781380Z tests/test_module_14.py::test_case_168 [32mPASSED[0m [ 52%]
+2026-08-04T09:44:17.5074383Z tests/test_module_14.py::test_case_169 [32mPASSED[0m [ 52%]
+2026-08-04T09:44:54.5367386Z tests/test_module_14.py::test_case_170 [32mPASSED[0m [ 52%]
+2026-08-04T09:45:31.5660389Z tests/test_module_14.py::test_case_171 [32mPASSED[0m [ 52%]
+2026-08-04T09:46:08.5953392Z tests/test_module_14.py::test_case_172 [32mPASSED[0m [ 53%]
+2026-08-04T09:46:45.6246395Z tests/test_module_14.py::test_case_173 [32mPASSED[0m [ 53%]
+2026-08-04T09:47:22.6539398Z tests/test_module_14.py::test_case_174 [32mPASSED[0m [ 53%]
+2026-08-04T09:47:59.6832401Z tests/test_module_14.py::test_case_175 [32mPASSED[0m [ 54%]
+2026-08-04T09:48:36.7125404Z tests/test_module_14.py::test_case_176 [32mPASSED[0m [ 54%]
+2026-08-04T09:49:13.7418407Z tests/test_module_14.py::test_case_177 [32mPASSED[0m [ 54%]
+2026-08-04T09:49:50.7711410Z tests/test_module_14.py::test_case_178 [32mPASSED[0m [ 55%]
+2026-08-04T09:50:27.8004413Z tests/test_module_14.py::test_case_179 [32mPASSED[0m [ 55%]
+2026-08-04T09:51:04.8297416Z tests/test_module_15.py::test_case_180 [32mPASSED[0m [ 55%]
+2026-08-04T09:51:41.8590419Z tests/test_module_15.py::test_case_181 [32mPASSED[0m [ 56%]
+2026-08-04T09:52:18.8883422Z tests/test_module_15.py::test_case_182 [32mPASSED[0m [ 56%]
+2026-08-04T09:52:55.9176425Z tests/test_module_15.py::test_case_183 [32mPASSED[0m [ 56%]
+2026-08-04T09:53:32.9469428Z tests/test_module_15.py::test_case_184 [32mPASSED[0m [ 56%]
+2026-08-04T09:54:09.9762431Z tests/test_module_15.py::test_case_185 [32mPASSED[0m [ 57%]
+2026-08-04T09:54:46.0055434Z tests/test_module_15.py::test_case_186 [32mPASSED[0m [ 57%]
+2026-08-04T09:55:23.0348437Z tests/test_module_15.py::test_case_187 [32mPASSED[0m [ 57%]
+2026-08-04T09:56:00.0641440Z tests/test_module_15.py::test_case_188 [32mPASSED[0m [ 58%]
+2026-08-04T09:56:37.0934443Z tests/test_module_15.py::test_case_189 [32mPASSED[0m [ 58%]
+2026-08-04T09:57:14.1227446Z tests/test_module_15.py::test_case_190 [32mPASSED[0m [ 58%]
+2026-08-04T09:57:51.1520449Z tests/test_module_15.py::test_case_191 [32mPASSED[0m [ 59%]
+2026-08-04T09:58:28.1813452Z tests/test_module_16.py::test_case_192 [32mPASSED[0m [ 59%]
+2026-08-04T09:59:05.2106455Z tests/test_module_16.py::test_case_193 [32mPASSED[0m [ 59%]
+2026-08-04T09:59:42.2399458Z tests/test_module_16.py::test_case_194 [32mPASSED[0m [ 60%]
+2026-08-04T09:00:19.2692461Z tests/test_module_16.py::test_case_195 [32mPASSED[0m [ 60%]
+2026-08-04T09:00:56.2985464Z tests/test_module_16.py::test_case_196 [32mPASSED[0m [ 60%]
+2026-08-04T09:01:33.3278467Z tests/test_module_16.py::test_case_197 [32mPASSED[0m [ 60%]
+2026-08-04T09:02:10.3571470Z tests/test_module_16.py::test_case_198 [32mPASSED[0m [ 61%]
+2026-08-04T09:02:47.3864473Z tests/test_module_16.py::test_case_199 [32mPASSED[0m [ 61%]
+2026-08-04T09:03:24.4157476Z tests/test_module_16.py::test_case_200 [32mPASSED[0m [ 61%]
+2026-08-04T09:04:01.4450479Z tests/test_module_16.py::test_case_201 [32mPASSED[0m [ 62%]
+2026-08-04T09:04:38.4743482Z tests/test_module_16.py::test_case_202 [32mPASSED[0m [ 62%]
+2026-08-04T09:05:15.5036485Z tests/test_module_16.py::test_case_203 [32mPASSED[0m [ 62%]
+2026-08-04T09:05:52.5329488Z tests/test_module_17.py::test_case_204 [32mPASSED[0m [ 63%]
+2026-08-04T09:06:29.5622491Z tests/test_module_17.py::test_case_205 [32mPASSED[0m [ 63%]
+2026-08-04T09:07:06.5915494Z tests/test_module_17.py::test_case_206 [32mPASSED[0m [ 63%]
+2026-08-04T09:07:43.6208497Z tests/test_module_17.py::test_case_207 [32mPASSED[0m [ 64%]
+2026-08-04T09:08:20.6501500Z tests/test_module_17.py::test_case_208 [32mPASSED[0m [ 64%]
+2026-08-04T09:08:57.6794503Z tests/test_module_17.py::test_case_209 [32mPASSED[0m [ 64%]
+2026-08-04T09:09:34.7087506Z tests/test_module_17.py::test_case_210 [32mPASSED[0m [ 64%]
+2026-08-04T09:10:11.7380509Z tests/test_module_17.py::test_case_211 [32mPASSED[0m [ 65%]
+2026-08-04T09:10:48.7673512Z tests/test_module_17.py::test_case_212 [32mPASSED[0m [ 65%]
+2026-08-04T09:11:25.7966515Z tests/test_module_17.py::test_case_213 [32mPASSED[0m [ 65%]
+2026-08-04T09:12:02.8259518Z tests/test_module_17.py::test_case_214 [32mPASSED[0m [ 66%]
+2026-08-04T09:12:39.8552521Z tests/test_module_17.py::test_case_215 [32mPASSED[0m [ 66%]
+2026-08-04T09:13:16.8845524Z tests/test_module_18.py::test_case_216 [32mPASSED[0m [ 66%]
+2026-08-04T09:13:53.9138527Z tests/test_module_18.py::test_case_217 [32mPASSED[0m [ 67%]
+2026-08-04T09:14:30.9431530Z tests/test_module_18.py::test_case_218 [32mPASSED[0m [ 67%]
+2026-08-04T09:15:07.9724533Z tests/test_module_18.py::test_case_219 [32mPASSED[0m [ 67%]
+2026-08-04T09:15:44.0017536Z tests/test_module_18.py::test_case_220 [32mPASSED[0m [ 68%]
+2026-08-04T09:16:21.0310539Z tests/test_module_18.py::test_case_221 [32mPASSED[0m [ 68%]
+2026-08-04T09:16:58.0603542Z tests/test_module_18.py::test_case_222 [32mPASSED[0m [ 68%]
+2026-08-04T09:17:35.0896545Z tests/test_module_18.py::test_case_223 [32mPASSED[0m [ 68%]
+2026-08-04T09:18:12.1189548Z tests/test_module_18.py::test_case_224 [32mPASSED[0m [ 69%]
+2026-08-04T09:18:49.1482551Z tests/test_module_18.py::test_case_225 [32mPASSED[0m [ 69%]
+2026-08-04T09:19:26.1775554Z tests/test_module_18.py::test_case_226 [32mPASSED[0m [ 69%]
+2026-08-04T09:20:03.2068557Z tests/test_module_18.py::test_case_227 [32mPASSED[0m [ 70%]
+2026-08-04T09:20:40.2361560Z tests/test_module_19.py::test_case_228 [32mPASSED[0m [ 70%]
+2026-08-04T09:21:17.2654563Z tests/test_module_19.py::test_case_229 [32mPASSED[0m [ 70%]
+2026-08-04T09:21:54.2947566Z tests/test_module_19.py::test_case_230 [32mPASSED[0m [ 71%]
+2026-08-04T09:22:31.3240569Z tests/test_module_19.py::test_case_231 [32mPASSED[0m [ 71%]
+2026-08-04T09:23:08.3533572Z tests/test_module_19.py::test_case_232 [32mPASSED[0m [ 71%]
+2026-08-04T09:23:45.3826575Z tests/test_module_19.py::test_case_233 [32mPASSED[0m [ 72%]
+2026-08-04T09:24:22.4119578Z tests/test_module_19.py::test_case_234 [32mPASSED[0m [ 72%]
+2026-08-04T09:24:59.4412581Z tests/test_module_19.py::test_case_235 [32mPASSED[0m [ 72%]
+2026-08-04T09:25:36.4705584Z tests/test_module_19.py::test_case_236 [32mPASSED[0m [ 72%]
+2026-08-04T09:26:13.4998587Z tests/test_module_19.py::test_case_237 [32mPASSED[0m [ 73%]
+2026-08-04T09:26:50.5291590Z tests/test_module_19.py::test_case_238 [32mPASSED[0m [ 73%]
+2026-08-04T09:27:27.5584593Z tests/test_module_19.py::test_case_239 [32mPASSED[0m [ 73%]
+2026-08-04T09:28:04.5877596Z tests/test_module_20.py::test_case_240 [32mPASSED[0m [ 74%]
+2026-08-04T09:28:41.6170599Z tests/test_module_20.py::test_case_241 [32mPASSED[0m [ 74%]
+2026-08-04T09:29:18.6463602Z tests/test_module_20.py::test_case_242 [32mPASSED[0m [ 74%]
+2026-08-04T09:29:55.6756605Z tests/test_module_20.py::test_case_243 [32mPASSED[0m [ 75%]
+2026-08-04T09:30:32.7049608Z tests/test_module_20.py::test_case_244 [32mPASSED[0m [ 75%]
+2026-08-04T09:31:09.7342611Z tests/test_module_20.py::test_case_245 [32mPASSED[0m [ 75%]
+2026-08-04T09:31:46.7635614Z tests/test_module_20.py::test_case_246 [32mPASSED[0m [ 76%]
+2026-08-04T09:32:23.7928617Z tests/test_module_20.py::test_case_247 [32mPASSED[0m [ 76%]
+2026-08-04T09:33:00.8221620Z tests/test_module_20.py::test_case_248 [32mPASSED[0m [ 76%]
+2026-08-04T09:33:37.8514623Z tests/test_module_20.py::test_case_249 [32mPASSED[0m [ 76%]
+2026-08-04T09:34:14.8807626Z tests/test_module_20.py::test_case_250 [32mPASSED[0m [ 77%]
+2026-08-04T09:34:51.9100629Z tests/test_module_20.py::test_case_251 [32mPASSED[0m [ 77%]
+2026-08-04T09:35:28.9393632Z tests/test_module_21.py::test_case_252 [32mPASSED[0m [ 77%]
+2026-08-04T09:36:05.9686635Z tests/test_module_21.py::test_case_253 [32mPASSED[0m [ 78%]
+2026-08-04T09:36:42.9979638Z tests/test_module_21.py::test_case_254 [32mPASSED[0m [ 78%]
+2026-08-04T09:37:19.0272641Z tests/test_module_21.py::test_case_255 [32mPASSED[0m [ 78%]
+2026-08-04T09:37:56.0565644Z tests/test_module_21.py::test_case_256 [32mPASSED[0m [ 79%]
+2026-08-04T09:38:33.0858647Z tests/test_module_21.py::test_case_257 [32mPASSED[0m [ 79%]
+2026-08-04T09:39:10.1151650Z tests/test_module_21.py::test_case_258 [32mPASSED[0m [ 79%]
+2026-08-04T09:39:47.1444653Z tests/test_module_21.py::test_case_259 [32mPASSED[0m [ 80%]
+2026-08-04T09:40:24.1737656Z tests/test_module_21.py::test_case_260 [32mPASSED[0m [ 80%]
+2026-08-04T09:41:01.2030659Z tests/test_module_21.py::test_case_261 [32mPASSED[0m [ 80%]
+2026-08-04T09:41:38.2323662Z tests/test_module_21.py::test_case_262 [32mPASSED[0m [ 80%]
+2026-08-04T09:42:15.2616665Z tests/test_module_21.py::test_case_263 [32mPASSED[0m [ 81%]
+2026-08-04T09:42:52.2909668Z tests/test_module_22.py::test_case_264 [32mPASSED[0m [ 81%]
+2026-08-04T09:43:29.3202671Z tests/test_module_22.py::test_case_265 [32mPASSED[0m [ 81%]
+2026-08-04T09:44:06.3495674Z tests/test_module_22.py::test_case_266 [32mPASSED[0m [ 82%]
+2026-08-04T09:44:43.3788677Z tests/test_module_22.py::test_case_267 [32mPASSED[0m [ 82%]
+2026-08-04T09:45:20.4081680Z tests/test_module_22.py::test_case_268 [32mPASSED[0m [ 82%]
+2026-08-04T09:45:57.4374683Z tests/test_module_22.py::test_case_269 [32mPASSED[0m [ 83%]
+2026-08-04T09:46:34.4667686Z tests/test_module_22.py::test_case_270 [32mPASSED[0m [ 83%]
+2026-08-04T09:47:11.4960689Z tests/test_module_22.py::test_case_271 [32mPASSED[0m [ 83%]
+2026-08-04T09:47:48.5253692Z tests/test_module_22.py::test_case_272 [32mPASSED[0m [ 84%]
+2026-08-04T09:48:25.5546695Z tests/test_module_22.py::test_case_273 [32mPASSED[0m [ 84%]
+2026-08-04T09:49:02.5839698Z tests/test_module_22.py::test_case_274 [32mPASSED[0m [ 84%]
+2026-08-04T09:49:39.6132701Z tests/test_module_22.py::test_case_275 [32mPASSED[0m [ 84%]
+2026-08-04T09:50:16.6425704Z tests/test_module_23.py::test_case_276 [32mPASSED[0m [ 85%]
+2026-08-04T09:50:53.6718707Z tests/test_module_23.py::test_case_277 [32mPASSED[0m [ 85%]
+2026-08-04T09:51:30.7011710Z tests/test_module_23.py::test_case_278 [32mPASSED[0m [ 85%]
+2026-08-04T09:52:07.7304713Z tests/test_module_23.py::test_case_279 [32mPASSED[0m [ 86%]
+2026-08-04T09:52:44.7597716Z tests/test_module_23.py::test_case_280 [32mPASSED[0m [ 86%]
+2026-08-04T09:53:21.7890719Z tests/test_module_23.py::test_case_281 [32mPASSED[0m [ 86%]
+2026-08-04T09:53:58.8183722Z tests/test_module_23.py::test_case_282 [32mPASSED[0m [ 87%]
+2026-08-04T09:54:35.8476725Z tests/test_module_23.py::test_case_283 [32mPASSED[0m [ 87%]
+2026-08-04T09:55:12.8769728Z tests/test_module_23.py::test_case_284 [32mPASSED[0m [ 87%]
+2026-08-04T09:55:49.9062731Z tests/test_module_23.py::test_case_285 [32mPASSED[0m [ 88%]
+2026-08-04T09:56:26.9355734Z tests/test_module_23.py::test_case_286 [32mPASSED[0m [ 88%]
+2026-08-04T09:57:03.9648737Z tests/test_module_23.py::test_case_287 [32mPASSED[0m [ 88%]
+2026-08-04T09:57:40.9941740Z tests/test_module_24.py::test_case_288 [32mPASSED[0m [ 88%]
+2026-08-04T09:58:17.0234743Z tests/test_module_24.py::test_case_289 [32mPASSED[0m [ 89%]
+2026-08-04T09:58:54.0527746Z tests/test_module_24.py::test_case_290 [32mPASSED[0m [ 89%]
+2026-08-04T09:59:31.0820749Z tests/test_module_24.py::test_case_291 [32mPASSED[0m [ 89%]
+2026-08-04T09:00:08.1113752Z tests/test_module_24.py::test_case_292 [32mPASSED[0m [ 90%]
+2026-08-04T09:00:45.1406755Z tests/test_module_24.py::test_case_293 [32mPASSED[0m [ 90%]
+2026-08-04T09:01:22.1699758Z tests/test_module_24.py::test_case_294 [32mPASSED[0m [ 90%]
+2026-08-04T09:01:59.1992761Z tests/test_module_24.py::test_case_295 [32mPASSED[0m [ 91%]
+2026-08-04T09:02:36.2285764Z tests/test_module_24.py::test_case_296 [32mPASSED[0m [ 91%]
+2026-08-04T09:03:13.2578767Z tests/test_module_24.py::test_case_297 [32mPASSED[0m [ 91%]
+2026-08-04T09:03:50.2871770Z tests/test_module_24.py::test_case_298 [32mPASSED[0m [ 92%]
+2026-08-04T09:04:27.3164773Z tests/test_module_24.py::test_case_299 [32mPASSED[0m [ 92%]
+2026-08-04T09:05:04.3457776Z tests/test_module_25.py::test_case_300 [32mPASSED[0m [ 92%]
+2026-08-04T09:05:41.3750779Z tests/test_module_25.py::test_case_301 [32mPASSED[0m [ 92%]
+2026-08-04T09:06:18.4043782Z tests/test_module_25.py::test_case_302 [32mPASSED[0m [ 93%]
+2026-08-04T09:06:55.4336785Z tests/test_module_25.py::test_case_303 [32mPASSED[0m [ 93%]
+2026-08-04T09:07:32.4629788Z tests/test_module_25.py::test_case_304 [32mPASSED[0m [ 93%]
+2026-08-04T09:08:09.4922791Z tests/test_module_25.py::test_case_305 [32mPASSED[0m [ 94%]
+2026-08-04T09:08:46.5215794Z tests/test_module_25.py::test_case_306 [32mPASSED[0m [ 94%]
+2026-08-04T09:09:23.5508797Z tests/test_module_25.py::test_case_307 [32mPASSED[0m [ 94%]
+2026-08-04T09:10:00.5801800Z tests/test_module_25.py::test_case_308 [32mPASSED[0m [ 95%]
+2026-08-04T09:10:37.6094803Z tests/test_module_25.py::test_case_309 [32mPASSED[0m [ 95%]
+2026-08-04T09:11:14.6387806Z tests/test_module_25.py::test_case_310 [32mPASSED[0m [ 95%]
+2026-08-04T09:11:51.6680809Z tests/test_module_25.py::test_case_311 [32mPASSED[0m [ 96%]
+2026-08-04T09:12:28.6973812Z tests/test_module_26.py::test_case_312 [32mPASSED[0m [ 96%]
+2026-08-04T09:13:05.7266815Z tests/test_module_26.py::test_case_313 [32mPASSED[0m [ 96%]
+2026-08-04T09:13:42.7559818Z tests/test_module_26.py::test_case_314 [32mPASSED[0m [ 96%]
+2026-08-04T09:14:19.7852821Z tests/test_module_26.py::test_case_315 [32mPASSED[0m [ 97%]
+2026-08-04T09:14:56.8145824Z tests/test_module_26.py::test_case_316 [32mPASSED[0m [ 97%]
+2026-08-04T09:15:33.8438827Z tests/test_module_26.py::test_case_317 [32mPASSED[0m [ 97%]
+2026-08-04T09:16:10.8731830Z tests/test_module_26.py::test_case_318 [32mPASSED[0m [ 98%]
+2026-08-04T09:16:47.9024833Z tests/test_module_26.py::test_case_319 [32mPASSED[0m [ 98%]
+2026-08-04T09:17:24.9317836Z tests/test_auth.py::test_hash_password_is_not_plaintext_and_is_stable [32mPASSED[0m [ 97%]
+2026-08-04T09:18:01.9610839Z tests/test_auth.py::test_verify_password_roundtrip [32mPASSED[0m [ 98%]
+2026-08-04T09:18:38.9903842Z tests/test_auth.py::test_short_password_is_rejected [32mPASSED[0m [ 98%]
+2026-08-04T09:19:15.0196845Z tests/test_auth.py::test_issue_token_sets_ttl [32mPASSED[0m [ 99%]
+2026-08-04T09:19:52.0489848Z tests/test_auth.py::test_refresh_extends_session [31mFAILED[0m [100%]
+2026-08-04T09:20:29.0782851Z 
+2026-08-04T09:21:06.1075854Z =================================== [1mFAILURES[0m ===================================
+2026-08-04T09:21:43.1368857Z [31m__________________________ test_refresh_extends_session __________________________[0m
+2026-08-04T09:22:20.1661860Z 
+2026-08-04T09:22:57.1954863Z     def test_refresh_extends_session():
+2026-08-04T09:23:34.2247866Z         token = issue_token("alice", now=1_000)
+2026-08-04T09:24:11.2540869Z         renewed = refresh(token, now=2_000)
+2026-08-04T09:24:48.2833872Z >       assert renewed.user == "alice"
+2026-08-04T09:25:25.3126875Z [31mE       AttributeError: 'dict' object has no attribute 'user'[0m
+2026-08-04T09:26:02.3419878Z 
+2026-08-04T09:26:39.3712881Z tests/test_auth.py:46: AttributeError
+2026-08-04T09:27:16.4005884Z =========================== [1mshort test summary info[0m ============================
+2026-08-04T09:27:53.4298887Z FAILED tests/test_auth.py::test_refresh_extends_session - AttributeError: 'dict' object has no attribute 'user'
+2026-08-04T09:28:30.4591890Z [31m========================= 1 failed, 124 passed in 1.82s =========================[0m
+2026-08-04T09:29:07.4884893Z ##[error]Process completed with exit code 1.
