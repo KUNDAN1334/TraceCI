@@ -30,6 +30,7 @@ from contextlib import asynccontextmanager
 from typing import Any
 
 import aiosqlite
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -39,6 +40,12 @@ from pydantic import BaseModel, Field
 from .graph import analysis_config, build_graph, count_tool_calls, friendly_error
 from .models import DEFAULT_MODEL_ID, catalog_payload, validate_key
 from .tools import ToolSession, describe_tool_call
+
+# Unlike scripts/run_agent.py (which loads this itself), nothing loaded .env
+# before this import until now -- uvicorn just runs `traceme.api:app`. Without
+# this call GITHUB_TOKEN is only ever a real OS env var, never a `.env` value,
+# no matter which directory uvicorn is started from.
+load_dotenv()
 
 DB_PATH = os.getenv("TRACEME_DB", "./traceme_checkpoints.sqlite")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
