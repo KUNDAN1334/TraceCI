@@ -1,5 +1,5 @@
 [project]
-name = "traceme"
+name = "traceci"
 version = "0.1.0"
 description = "An agent that diagnoses failed GitHub Actions runs"
 requires-python = ">=3.10"

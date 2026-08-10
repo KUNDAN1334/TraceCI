@@ -26,7 +26,7 @@ class ContextBudget:
 
     This exists because of free tiers. Groq's free plan caps *tokens per
     minute*, not just requests: 12K TPM on `llama-3.3-70b-versatile`, 8K on the
-    gpt-oss models. A single TraceMe analysis is three model calls in about
+    gpt-oss models. A single TraceCI analysis is three model calls in about
     fifteen seconds, and each one resends the whole conversation -- so the
     default budget (a 14K-character log window plus a 12K-character file read)
     burns roughly 24K tokens in under a minute and gets a `429` halfway through
@@ -303,7 +303,7 @@ def validate_key(model_id: str, api_key: str) -> tuple[bool, str]:
     if not calls:
         return False, (
             f"`{get_spec(model_id).label}` answered without calling the tool it was "
-            "given. TraceMe needs tool calling; pick another model."
+            "given. TraceCI needs tool calling; pick another model."
         )
     return True, "Key is valid and the model calls tools."
 

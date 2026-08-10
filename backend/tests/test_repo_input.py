@@ -1,6 +1,6 @@
 import pytest
 
-from traceme.repo_input import RepoInputError, parse_repo_input
+from traceci.repo_input import RepoInputError, parse_repo_input
 
 
 @pytest.mark.parametrize(

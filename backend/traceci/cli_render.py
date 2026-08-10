@@ -22,7 +22,7 @@ RULE = "=" * 72
 
 
 def header(model_id: str, thread_id: str, *, note: str = "") -> None:
-    print(f"{BOLD}TraceMe{RESET} {DIM}model={model_id} thread={thread_id}{RESET}")
+    print(f"{BOLD}TraceCI{RESET} {DIM}model={model_id} thread={thread_id}{RESET}")
     print(f"{DIM}{note or 'Prefetch takes 10-15s (list runs, download the log zip, diff).'}"
           f"{RESET}\n")
 

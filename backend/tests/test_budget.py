@@ -1,7 +1,7 @@
 """Free-tier context budgets.
 
 Groq's free plan caps *tokens per minute*, not just requests: 12K TPM on
-`llama-3.3-70b-versatile`, 8K on the gpt-oss models. One TraceMe analysis is
+`llama-3.3-70b-versatile`, 8K on the gpt-oss models. One TraceCI analysis is
 three model calls inside about fifteen seconds and each call resends the whole
 conversation, so the default budget blows the cap halfway through the
 investigation and the run dies with a 429.
@@ -16,11 +16,11 @@ import pathlib
 import pytest
 from conftest import SLUG
 
-from traceme.log_window import build_log_window
-from traceme.models import MODEL_CATALOG, NORMAL, TIGHT, budget_for, get_spec
-from traceme.prefetch import prefetch
-from traceme.repo_input import parse_repo_input
-from traceme.tools import ToolSession, build_tools
+from traceci.log_window import build_log_window
+from traceci.models import MODEL_CATALOG, NORMAL, TIGHT, budget_for, get_spec
+from traceci.prefetch import prefetch
+from traceci.repo_input import parse_repo_input
+from traceci.tools import ToolSession, build_tools
 
 FIX = pathlib.Path(__file__).parent / "fixtures"
 
@@ -100,7 +100,7 @@ def test_a_whole_tight_analysis_fits_inside_a_free_tier_minute(gh_api):
       2. system + brief + one file read
       3. system + brief + file read + reasoning  (the diagnose call)
     """
-    from traceme.prompts import failure_brief, system_prompt
+    from traceci.prompts import failure_brief, system_prompt
 
     session = ToolSession()
     tools = {t.name: t for t in build_tools(session)}
@@ -124,7 +124,7 @@ def test_a_whole_tight_analysis_fits_inside_a_free_tier_minute(gh_api):
 
     assert total < FREE_TPM_FLOOR * 1.5, (
         f"~{total} tokens per analysis will 429 on an 8K TPM free tier; "
-        "shrink TIGHT in traceme/models.py"
+        "shrink TIGHT in traceci/models.py"
     )
     # And a sanity floor -- if this ever collapses, the window has stopped
     # containing anything and the diagnosis is a guess.
@@ -169,7 +169,7 @@ def test_read_file_truncates_to_the_session_budget(gh_api, monkeypatch):
 
 
 def test_the_diff_summary_lists_fewer_files_on_a_tight_budget():
-    from traceme.prefetch import summarise_diff
+    from traceci.prefetch import summarise_diff
 
     compare = {
         "ahead_by": 1,

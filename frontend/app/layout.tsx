@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "TraceMe - diagnose a red CI build",
+  title: "TraceCI - diagnose a red CI build",
   description:
     "An agent that reads a failed GitHub Actions run, investigates the repo with read-only tools, and reports an evidence-backed root cause.",
 };

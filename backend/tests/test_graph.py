@@ -13,7 +13,7 @@ from conftest import RUN_ID, SLUG
 from fake_model import GOOD_DIAGNOSIS, Script, make_provider
 from langgraph.checkpoint.sqlite import SqliteSaver
 
-from traceme.graph import (
+from traceci.graph import (
     MAX_ITERATIONS,
     Diagnosis,
     analysis_config,
@@ -21,7 +21,7 @@ from traceme.graph import (
     count_tool_calls,
     friendly_error,
 )
-from traceme.tools import ToolSession
+from traceci.tools import ToolSession
 
 
 def run(turns, *, repeat_last=False, max_iterations=MAX_ITERATIONS, checkpointer=None,
@@ -172,7 +172,7 @@ def test_no_api_key_is_ever_written_to_the_checkpoint(gh_api, tmp_path):
 
 
 def test_analysis_config_keeps_secrets_out_of_state_by_construction():
-    from traceme.graph import KEY_API, KEY_GH_TOKEN, CIState
+    from traceci.graph import KEY_API, KEY_GH_TOKEN, CIState
 
     cfg = analysis_config("t", repo="a/b", model="gpt-4o-mini", api_key="sk-1",
                           github_token="ghp_1")
@@ -191,7 +191,7 @@ def test_no_plain_named_secret_key_survives_into_metadata(gh_api, tmp_path):
     every str/int/bool in `configurable` into checkpoint metadata."""
     from langgraph.checkpoint.base import get_checkpoint_metadata
 
-    from traceme.graph import KEY_API
+    from traceci.graph import KEY_API
 
     cfg = analysis_config("t", repo="a/b", model="gpt-4o-mini",
                           api_key="sk-leak-me", github_token="ghp_leak_me")
@@ -204,9 +204,9 @@ def test_no_plain_named_secret_key_survives_into_metadata(gh_api, tmp_path):
 
 # -- error surface ---------------------------------------------------------
 def test_friendly_error_never_returns_a_stack_trace(gh_api):
-    from traceme.github import GitHubError, LogsExpired, NoFailedRun
-    from traceme.models import ModelError
-    from traceme.repo_input import RepoInputError
+    from traceci.github import GitHubError, LogsExpired, NoFailedRun
+    from traceci.models import ModelError
+    from traceci.repo_input import RepoInputError
 
     for exc in [RepoInputError("Enter a repository, e.g. `owner/repo`."),
                 NoFailedRun("No failed run found for a/b."),
@@ -219,7 +219,7 @@ def test_friendly_error_never_returns_a_stack_trace(gh_api):
 
 
 def test_a_bad_repo_fails_before_any_model_call(gh_api):
-    from traceme.repo_input import RepoInputError
+    from traceci.repo_input import RepoInputError
 
     script = Script(["never reached"], GOOD_DIAGNOSIS)
     graph, _ = build_graph(ToolSession(), model_provider=make_provider(script))

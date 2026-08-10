@@ -32,12 +32,12 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from dotenv import load_dotenv  # noqa: E402
 from langgraph.checkpoint.sqlite import SqliteSaver  # noqa: E402
 
-# Rendering lives in traceme.cli_render so that `scripts/dry_run.py` prints
+# Rendering lives in traceci.cli_render so that `scripts/dry_run.py` prints
 # byte-identically. A rehearsal that renders differently is not a rehearsal.
-from traceme.cli_render import DIM, RED, RESET, header, run_and_render  # noqa: E402
-from traceme.graph import analysis_config, build_graph  # noqa: E402
-from traceme.models import BY_ID, DEFAULT_MODEL_ID, looks_like_a_placeholder  # noqa: E402
-from traceme.tools import ToolSession  # noqa: E402
+from traceci.cli_render import DIM, RED, RESET, header, run_and_render  # noqa: E402
+from traceci.graph import analysis_config, build_graph  # noqa: E402
+from traceci.models import BY_ID, DEFAULT_MODEL_ID, looks_like_a_placeholder  # noqa: E402
+from traceci.tools import ToolSession  # noqa: E402
 
 
 def main() -> int:
@@ -46,16 +46,16 @@ def main() -> int:
     ap.add_argument("repo", help="owner/repo, a GitHub URL, or an Actions run URL")
     ap.add_argument("--branch", default=None, help="e.g. break/subtle")
     ap.add_argument("--run-id", type=int, default=None)
-    ap.add_argument("--model", default=os.getenv("TRACEME_MODEL", DEFAULT_MODEL_ID),
+    ap.add_argument("--model", default=os.getenv("TRACECI_MODEL", DEFAULT_MODEL_ID),
                     choices=sorted(BY_ID))
-    ap.add_argument("--db", default=os.getenv("TRACEME_DB", "./traceme_checkpoints.sqlite"))
+    ap.add_argument("--db", default=os.getenv("TRACECI_DB", "./traceci_checkpoints.sqlite"))
     ap.add_argument("--thread", default=None, help="reuse a thread id to inspect it later")
     args = ap.parse_args()
 
     # The provider-specific fallbacks are ordered with Groq first because it is
     # the free one and therefore the default model.
     api_key = (
-        os.getenv("TRACEME_API_KEY")
+        os.getenv("TRACECI_API_KEY")
         or os.getenv("GROQ_API_KEY")
         or os.getenv("OPENAI_API_KEY")
         or os.getenv("ANTHROPIC_API_KEY")
@@ -63,12 +63,12 @@ def main() -> int:
         or ""
     )
     if not api_key:
-        print(f"{RED}No API key.{RESET} Set TRACEME_API_KEY (or GROQ_API_KEY / "
+        print(f"{RED}No API key.{RESET} Set TRACECI_API_KEY (or GROQ_API_KEY / "
               "OPENAI_API_KEY / ANTHROPIC_API_KEY / GOOGLE_API_KEY) in .env.\n"
               "A free Groq key works: https://console.groq.com/keys", file=sys.stderr)
         return 2
     if looks_like_a_placeholder(api_key):
-        print(f"{RED}TRACEME_API_KEY is still the placeholder value.{RESET} "
+        print(f"{RED}TRACECI_API_KEY is still the placeholder value.{RESET} "
               "Paste a real key into backend/.env. Free Groq key: "
               "https://console.groq.com/keys", file=sys.stderr)
         return 2
@@ -79,7 +79,7 @@ def main() -> int:
         # Credentials` later, which reads like an expired token and sends you
         # off regenerating a good one.
         print(f"{RED}GITHUB_TOKEN is missing or still the placeholder value.{RESET} "
-              "TraceMe cannot download Actions logs without a real classic PAT "
+              "TraceCI cannot download Actions logs without a real classic PAT "
               "(`public_repo` scope): https://github.com/settings/tokens", file=sys.stderr)
         return 2
 

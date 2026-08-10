@@ -11,7 +11,7 @@ import re
 
 import pytest
 
-from traceme.log_window import (
+from traceci.log_window import (
     build_log_window,
     clean_log,
     find_anchor,

@@ -5,7 +5,7 @@ import pytest
 import respx
 from conftest import BASE_SHA, HEAD_SHA, OWNER, REPO, RUN_ID, SLUG, make_run
 
-from traceme.github import GitHubClient, GitHubError, JobRef, LogsExpired, NoFailedRun, StepRef
+from traceci.github import GitHubClient, GitHubError, JobRef, LogsExpired, NoFailedRun, StepRef
 
 
 def test_finds_the_latest_failed_run(client):

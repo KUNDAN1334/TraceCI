@@ -18,7 +18,7 @@ from typing import Any
 import httpx
 
 API = "https://api.github.com"
-UA = "TraceMe/0.1 (+https://github.com/)"
+UA = "TraceCI/0.1 (+https://github.com/)"
 
 
 class GitHubError(RuntimeError):

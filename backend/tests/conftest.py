@@ -17,7 +17,7 @@ import httpx
 import pytest
 import respx
 
-from traceme.github import GitHubClient
+from traceci.github import GitHubClient
 
 FIXTURES = pathlib.Path(__file__).parent / "fixtures"
 

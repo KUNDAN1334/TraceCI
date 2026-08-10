@@ -12,7 +12,7 @@ venv/
 .env.local
 *.sqlite
 *.sqlite3
-traceme_checkpoints.sqlite
+traceci_checkpoints.sqlite
 
 # node / next
 node_modules/

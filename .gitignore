@@ -14,7 +14,7 @@ venv/
 *.sqlite3
 *.sqlite-shm
 *.sqlite-wal
-traceme_checkpoints.sqlite
+traceci_checkpoints.sqlite
 
 # node / next
 node_modules/

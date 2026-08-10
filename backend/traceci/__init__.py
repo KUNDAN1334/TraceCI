@@ -1,4 +1,4 @@
-"""TraceMe -- an agent that diagnoses failed GitHub Actions runs."""
+"""TraceCI -- an agent that diagnoses failed GitHub Actions runs."""
 
 __version__ = "0.1.0"
 

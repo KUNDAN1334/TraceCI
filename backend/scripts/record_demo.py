@@ -88,7 +88,7 @@ def main() -> int:
     from fake_model import Script, make_provider
     from fastapi.testclient import TestClient
 
-    from traceme import api as api_mod
+    from traceci import api as api_mod
 
     with respx.mock(assert_all_called=False) as router:
         conftest.FakeGitHub(router)   # registers every route on the router
@@ -144,5 +144,5 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    os.environ.setdefault("TRACEME_DB", ":memory:")
+    os.environ.setdefault("TRACECI_DB", ":memory:")
     raise SystemExit(main())

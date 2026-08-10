@@ -3,9 +3,9 @@
 import pytest
 from conftest import BASE_SHA, HEAD_SHA, RUN_ID, SLUG
 
-from traceme.github import GitHubError
-from traceme.prefetch import prefetch, summarise_diff
-from traceme.repo_input import parse_repo_input
+from traceci.github import GitHubError
+from traceci.prefetch import prefetch, summarise_diff
+from traceci.repo_input import parse_repo_input
 
 
 def run_prefetch(**kw):

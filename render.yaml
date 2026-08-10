@@ -1,7 +1,7 @@
 # Render blueprint. `New +` -> `Blueprint` -> point at this repo.
 services:
   - type: web
-    name: traceme-api
+    name: traceci-api
     runtime: docker
     plan: free
     rootDir: backend
@@ -16,5 +16,5 @@ services:
       # trailing slash, or the browser will block every request.
       - key: ALLOWED_ORIGINS
         sync: false
-      - key: TRACEME_DB
-        value: /app/traceme_checkpoints.sqlite
+      - key: TRACECI_DB
+        value: /app/traceci_checkpoints.sqlite

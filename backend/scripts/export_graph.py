@@ -15,8 +15,8 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
-from traceme.graph import build_graph  # noqa: E402
-from traceme.tools import ToolSession  # noqa: E402
+from traceci.graph import build_graph  # noqa: E402
+from traceci.tools import ToolSession  # noqa: E402
 
 DOCS = pathlib.Path(__file__).resolve().parents[2] / "docs"
 

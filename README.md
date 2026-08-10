@@ -1,4 +1,4 @@
-# TraceMe
+# TraceCI
 
 **An agent that diagnoses a red GitHub Actions run.** It fetches the failing
 step's log and the diff since the last green commit, decides for itself whether
@@ -33,7 +33,7 @@ So you scroll. You find the traceback. You read the test. You open the diff.
 Fifteen minutes later you know that someone changed a return type and the test
 that broke has nothing to do with the commit message.
 
-TraceMe automates that first fifteen minutes.
+TraceCI automates that first fifteen minutes.
 
 ## Why an agent, and not a script
 
@@ -111,7 +111,7 @@ re-opens a finished run — shareable links, no re-spend.
 
 ## The log window is the product
 
-`backend/traceme/log_window.py` is the highest-leverage file here. Given a noisy
+`backend/traceci/log_window.py` is the highest-leverage file here. Given a noisy
 4,000-line log it produces ~120 readable lines. Three rules, each learned the
 hard way:
 
@@ -160,7 +160,7 @@ garbage with no error anywhere.
 
 ```
 backend/
-  traceme/
+  traceci/
     repo_input.py   accepts owner/repo, URLs, SSH, .git, tree/ and run URLs
     github.py       GitHub REST client (runs, jobs, log zip, compare, tree)
     log_window.py   ANSI/timestamp stripping + tiered error anchoring + tail
@@ -208,7 +208,7 @@ script.
 
 ```bash
 cd backend && pip install -r requirements-dev.txt && pytest -q      # 150 passed
-uvicorn traceme.api:app --reload                                    # :8000
+uvicorn traceci.api:app --reload                                    # :8000
 cd ../frontend && npm install && npm run dev                        # :3000
 ```
 
@@ -227,7 +227,7 @@ days:
   swap.
 - **No verification of the suggested fix.** It is not applied, not run, not
   tested. Read-only is the whole safety story.
-- **Logs expire after ~90 days** and GitHub returns `410`; TraceMe reports that
+- **Logs expire after ~90 days** and GitHub returns `410`; TraceCI reports that
   rather than guessing.
 - **Only the first failing job** is analysed. A matrix build with three distinct
   failures gets one diagnosis.

@@ -7,7 +7,7 @@ from conftest import SLUG
 from fake_model import GOOD_DIAGNOSIS, Script, make_provider
 from fastapi.testclient import TestClient
 
-from traceme import api as api_mod
+from traceci import api as api_mod
 
 ALLOWED_EVENT_TYPES = {"step", "token", "result", "done", "error"}
 
@@ -221,7 +221,7 @@ def test_validate_reports_a_model_that_does_not_call_tools(app_client, monkeypat
         def invoke(self, _msgs):
             return AIMessage(content="It is sunny in Pune.")  # no tool_calls
 
-    monkeypatch.setattr("traceme.models.build_model", lambda *a, **k: NoToolsModel())
+    monkeypatch.setattr("traceci.models.build_model", lambda *a, **k: NoToolsModel())
     client, _ = app_client(["x"])
     with client:
         r = client.post("/validate", json={"model": "gpt-4o-mini", "key": "sk-whatever"})
@@ -240,7 +240,7 @@ def test_validate_accepts_a_model_that_does_call_tools(app_client, monkeypatch):
             return AIMessage(content="", tool_calls=[
                 {"name": "_probe", "args": {"city": "Pune"}, "id": "1", "type": "tool_call"}])
 
-    monkeypatch.setattr("traceme.models.build_model", lambda *a, **k: GoodModel())
+    monkeypatch.setattr("traceci.models.build_model", lambda *a, **k: GoodModel())
     client, _ = app_client(["x"])
     with client:
         r = client.post("/validate", json={"model": "gpt-4o-mini", "key": "sk-good"})
@@ -252,7 +252,7 @@ def test_validate_rejects_a_bad_key(app_client, monkeypatch):
         # Provider SDKs raise their own exception classes, not ours.
         raise RuntimeError("Error code: 401 - Incorrect API key provided")
 
-    monkeypatch.setattr("traceme.models.build_model", boom)
+    monkeypatch.setattr("traceci.models.build_model", boom)
     client, _ = app_client(["x"])
     with client:
         r = client.post("/validate", json={"model": "gpt-4o-mini", "key": "sk-bad"})

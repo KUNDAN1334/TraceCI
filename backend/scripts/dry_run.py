@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """A full rehearsal of an analysis, with NO credentials and NO network.
 
-Why this exists: the first time you run TraceMe for real, two things are
+Why this exists: the first time you run TraceCI for real, two things are
 unfamiliar at once -- the tool (did I set it up right?) and the output (is this
 what a good answer looks like?). This separates them. It runs the *real* graph,
 the *real* prefetch, the *real* five tools and the *real* terminal renderer
@@ -13,7 +13,7 @@ exactly what your terminal will print before you spend a single token.
     python scripts/dry_run.py --case lazy      # what a WRONG answer looks like
 
 The only fake parts are the GitHub responses and the model's choices. Every
-line of TraceMe's own code in the path is the code that ships.
+line of TraceCI's own code in the path is the code that ships.
 """
 
 from __future__ import annotations
@@ -32,7 +32,7 @@ sys.path.insert(0, str(ROOT / "tests"))
 
 from langgraph.checkpoint.sqlite import SqliteSaver  # noqa: E402
 
-from traceme.cli_render import (  # noqa: E402
+from traceci.cli_render import (  # noqa: E402
     BOLD,
     DIM,
     RESET,
@@ -42,8 +42,8 @@ from traceme.cli_render import (  # noqa: E402
     render_footer,
     render_updates,
 )
-from traceme.graph import analysis_config, build_graph  # noqa: E402
-from traceme.tools import ToolSession  # noqa: E402
+from traceci.graph import analysis_config, build_graph  # noqa: E402
+from traceci.tools import ToolSession  # noqa: E402
 
 MODEL = "groq-llama-3.3-70b"
 

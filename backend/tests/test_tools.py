@@ -4,9 +4,9 @@ and their docstrings are written as decision criteria."""
 import pytest
 from conftest import BASE_SHA, HEAD_SHA, SLUG
 
-from traceme.prefetch import prefetch
-from traceme.repo_input import parse_repo_input
-from traceme.tools import ToolSession, build_tools, describe_tool_call
+from traceci.prefetch import prefetch
+from traceci.repo_input import parse_repo_input
+from traceci.tools import ToolSession, build_tools, describe_tool_call
 
 EXPECTED = {"read_file", "get_full_diff", "search_code", "list_directory", "get_more_log"}
 

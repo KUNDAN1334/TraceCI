@@ -1,6 +1,6 @@
 import pytest
 
-from traceme.models import looks_like_a_placeholder
+from traceci.models import looks_like_a_placeholder
 
 
 @pytest.mark.parametrize(

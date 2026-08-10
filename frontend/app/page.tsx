@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * TraceMe - one page, on purpose.
+ * TraceCI - one page, on purpose.
  *
  * Two things here are not optional, and both exist because of the same
  * observation: an interviewer will not paste an API key and will not type a
@@ -222,7 +222,7 @@ export default function Page() {
     <main className="relative mx-auto max-w-3xl px-5 pb-24 pt-14">
       <header className="mb-8">
         <div className="flex items-baseline gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight">TraceMe</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">TraceCI</h1>
           <span className="text-sm text-ink-400">CI failure, diagnosed</span>
         </div>
         <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-300">
@@ -332,7 +332,7 @@ export default function Page() {
             {selected.budget === "tight" && (
               <>
                 {" "}
-                TraceMe automatically shrinks the log window and file reads for free-tier models so
+                TraceCI automatically shrinks the log window and file reads for free-tier models so
                 one analysis stays inside the tokens-per-minute cap.
               </>
             )}
@@ -480,7 +480,7 @@ export default function Page() {
       )}
 
       <footer className="mt-14 border-t border-ink-800 pt-5 text-xs leading-relaxed text-ink-400">
-        Read-only: TraceMe never writes to your repository. Your API key is sent with a single request, is never
+        Read-only: TraceCI never writes to your repository. Your API key is sent with a single request, is never
         written to the graph state or the checkpoint database, and is not returned by the share link.
       </footer>
     </main>

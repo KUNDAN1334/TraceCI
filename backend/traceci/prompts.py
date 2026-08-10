@@ -30,7 +30,7 @@ So the prompt does two opposite jobs at once. What is tuned, and why:
 """
 
 SYSTEM_PROMPT = """\
-You are TraceMe, a CI failure diagnostician. A GitHub Actions run went red and \
+You are TraceCI, a CI failure diagnostician. A GitHub Actions run went red and \
 you have to find the real root cause -- not the first thing that looks like an \
 error.
 

@@ -42,12 +42,12 @@ from .models import DEFAULT_MODEL_ID, catalog_payload, validate_key
 from .tools import ToolSession, describe_tool_call
 
 # Unlike scripts/run_agent.py (which loads this itself), nothing loaded .env
-# before this import until now -- uvicorn just runs `traceme.api:app`. Without
+# before this import until now -- uvicorn just runs `traceci.api:app`. Without
 # this call GITHUB_TOKEN is only ever a real OS env var, never a `.env` value,
 # no matter which directory uvicorn is started from.
 load_dotenv()
 
-DB_PATH = os.getenv("TRACEME_DB", "./traceme_checkpoints.sqlite")
+DB_PATH = os.getenv("TRACECI_DB", "./traceci_checkpoints.sqlite")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 ALLOWED_ORIGINS = [
     o.strip() for o in os.getenv(
@@ -93,7 +93,7 @@ async def lifespan(app: FastAPI):
         await conn.close()
 
 
-app = FastAPI(title="TraceMe", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="TraceCI", version="0.1.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
