@@ -1,0 +1,27 @@
+[project]
+name = "traceme"
+version = "0.1.0"
+description = "An agent that diagnoses failed GitHub Actions runs"
+requires-python = ">=3.10"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+# Deliberately not "everything": E/F catch real bugs, I keeps imports tidy,
+# B catches the bugbear class of mistakes, UP keeps the syntax modern.
+select = ["E", "F", "I", "B", "UP"]
+ignore = [
+    "E501",   # long lines are handled by the formatter, not by failing CI
+    "B008",   # FastAPI's Depends() idiom is a function call in a default
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B011"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".", "tests"]
+asyncio_mode = "auto"
+filterwarnings = ["ignore::DeprecationWarning"]
