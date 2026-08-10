@@ -233,6 +233,26 @@ def build_model(model_id: str, api_key: str, *, temperature: float = 0.0) -> Bas
         raise ModelError(f"Could not initialise `{spec.label}`: {exc}") from exc
 
 
+_PLACEHOLDER_MARKERS = ("xxxx", "PASTE_", "YOUR_", "REPLACE", "<", "changeme", "...")
+
+
+def looks_like_a_placeholder(value: str | None) -> bool:
+    """True when a credential is obviously a copied-but-unedited example value.
+
+    Worth its ten lines: the original `.env.example` shipped
+    `ghp_xxxxxxxx...` padded to a real PAT's 40 characters. It has the right
+    prefix and the right length, so it survives every eyeball check -- and then
+    GitHub answers `401 Bad Credentials`, which reads like an expired or
+    wrongly-scoped token and sends you off regenerating a perfectly good one.
+    Catching it here turns twenty minutes of misdirection into one sentence.
+    """
+    if not value or not value.strip():
+        return True
+    v = value.strip()
+    low = v.lower()
+    return any(m.lower() in low for m in _PLACEHOLDER_MARKERS)
+
+
 def _explain(exc: Exception) -> str:
     """Turn a provider SDK exception into one sentence a human can act on."""
     msg = str(exc)

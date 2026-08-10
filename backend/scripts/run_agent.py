@@ -36,7 +36,7 @@ from langgraph.checkpoint.sqlite import SqliteSaver  # noqa: E402
 # byte-identically. A rehearsal that renders differently is not a rehearsal.
 from traceme.cli_render import DIM, RED, RESET, header, run_and_render  # noqa: E402
 from traceme.graph import analysis_config, build_graph  # noqa: E402
-from traceme.models import BY_ID, DEFAULT_MODEL_ID  # noqa: E402
+from traceme.models import BY_ID, DEFAULT_MODEL_ID, looks_like_a_placeholder  # noqa: E402
 from traceme.tools import ToolSession  # noqa: E402
 
 
@@ -67,7 +67,21 @@ def main() -> int:
               "OPENAI_API_KEY / ANTHROPIC_API_KEY / GOOGLE_API_KEY) in .env.\n"
               "A free Groq key works: https://console.groq.com/keys", file=sys.stderr)
         return 2
+    if looks_like_a_placeholder(api_key):
+        print(f"{RED}TRACEME_API_KEY is still the placeholder value.{RESET} "
+              "Paste a real key into backend/.env. Free Groq key: "
+              "https://console.groq.com/keys", file=sys.stderr)
+        return 2
+
     gh_token = os.getenv("GITHUB_TOKEN")
+    if looks_like_a_placeholder(gh_token):
+        # Fail loudly here rather than letting GitHub answer `401 Bad
+        # Credentials` later, which reads like an expired token and sends you
+        # off regenerating a good one.
+        print(f"{RED}GITHUB_TOKEN is missing or still the placeholder value.{RESET} "
+              "TraceMe cannot download Actions logs without a real classic PAT "
+              "(`public_repo` scope): https://github.com/settings/tokens", file=sys.stderr)
+        return 2
 
     conn = sqlite3.connect(args.db, check_same_thread=False)
     graph, _session = build_graph(ToolSession(), checkpointer=SqliteSaver(conn))
