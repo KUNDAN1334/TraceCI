@@ -1,0 +1,20 @@
+# Render blueprint. `New +` -> `Blueprint` -> point at this repo.
+services:
+  - type: web
+    name: traceme-api
+    runtime: docker
+    plan: free
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      # Classic PAT, `public_repo` scope only. Set it in the dashboard --
+      # sync: false means Render will prompt rather than store it here.
+      - key: GITHUB_TOKEN
+        sync: false
+      # Must match the deployed Vercel URL exactly, scheme included, no
+      # trailing slash, or the browser will block every request.
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: TRACEME_DB
+        value: /app/traceme_checkpoints.sqlite
