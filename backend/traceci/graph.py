@@ -30,6 +30,7 @@ Four decisions worth explaining:
 
 from __future__ import annotations
 
+import re
 from collections.abc import Callable
 from dataclasses import replace
 from typing import Annotated, Any, Literal, TypedDict
@@ -71,14 +72,27 @@ class CIState(TypedDict):
     diff_summary: str
     iterations: int
     diagnosis: dict | None
+    # Non-empty when the deterministic layer proved there is nothing to
+    # diagnose. The model is never invoked in that case.
+    inconclusive_reason: str
+    # What run selection skipped, and whether newer runs are green. Shown to
+    # the user so "it diagnosed the wrong run" is answerable at a glance.
+    selection_notes: list[str]
 
 
 class Diagnosis(BaseModel):
     """The typed contract the whole system exists to produce."""
 
     category: Literal[
-        "test_failure", "dependency", "config", "infra", "lint_type", "flaky", "unknown"
-    ] = Field(description="What broke, classified by cause rather than by which step failed.")
+        "test_failure", "dependency", "config", "infra", "lint_type", "flaky",
+        "inconclusive", "unknown",
+    ] = Field(
+        description=(
+            "What broke, classified by cause rather than by which step failed. Use "
+            "`inconclusive` when the evidence does not support ANY cause -- that is a "
+            "valid, useful answer, not a failure to try harder."
+        )
+    )
     root_cause: str = Field(
         description="2-3 specific sentences naming the file, function and value at fault."
     )
@@ -86,11 +100,70 @@ class Diagnosis(BaseModel):
         description="2-5 exact log lines or file:line references. Quotes, never paraphrase."
     )
     confidence: int = Field(ge=1, le=10, description="1-10; 8+ only when nothing is inferred.")
-    suggested_fix: str = Field(description="What to change, imperative, one or two sentences.")
+    suggested_fix: str = Field(
+        default="",
+        description=(
+            "What to change, imperative, one or two sentences. Leave EMPTY when the "
+            "category is `inconclusive` -- suggesting a fix for a cause you have not "
+            "identified is a guess."
+        ),
+    )
     fix_snippet: str = Field(default="", description="Minimal patch, or empty string.")
 
 
 ModelProvider = Callable[[dict[str, Any]], BaseChatModel]
+
+
+# Phrases that mean "I did not find the cause". A diagnosis containing one of
+# these is not a diagnosis, whatever confidence the model attached to it.
+_HEDGES = re.compile(
+    r"(not clear|unclear|cannot (be )?(determine|state|identify)|could not determine|"
+    r"is unknown|requires further|further investigation|more information (is|would be) "
+    r"(needed|required)|difficult to (say|determine|provide)|it seems that|might be "
+    r"related to|no error message|insufficient (information|evidence)|without more)",
+    re.I,
+)
+
+
+def enforce_honesty(payload: dict) -> dict:
+    """Make the returned confidence and category consistent with the prose.
+
+    A structured-output schema guarantees the *shape* of an answer, not that
+    there is an answer in it. Observed in the wild: a model that had found
+    nothing returned a root cause reading "the cause is not clear... might be
+    related to the configuration", category `unknown`, confidence 5, and a
+    suggested fix of "investigate the configuration". Every field was
+    well-formed and the whole thing was a guess wearing a diagnosis's clothes.
+
+    Confidence is defined as a claim about sourcing, so hedged prose and a
+    mid-range score are a contradiction. Rather than trusting the prompt to
+    prevent it, the contradiction is resolved here: hedging demotes the
+    category to `inconclusive`, caps confidence, and drops the suggested fix,
+    because a fix for a cause you did not identify is the most costly part of
+    a wrong answer.
+    """
+    root_cause = str(payload.get("root_cause") or "")
+    category = payload.get("category") or "unknown"
+    hedged = bool(_HEDGES.search(root_cause))
+
+    if hedged or category in {"unknown", "inconclusive"}:
+        payload["category"] = "inconclusive"
+        payload["confidence"] = min(int(payload.get("confidence") or 1), 2)
+        payload["suggested_fix"] = ""
+        payload["fix_snippet"] = ""
+    else:
+        payload["confidence"] = max(1, min(10, int(payload.get("confidence") or 1)))
+
+    # Evidence that is only the universal exit-code trailer establishes
+    # nothing, and a high score on top of it is unsupportable.
+    evidence = [str(e) for e in (payload.get("evidence") or [])]
+    if evidence and all(
+        re.search(r"process completed with exit code|operation was canceled", e, re.I)
+        for e in evidence
+    ):
+        payload["confidence"] = min(int(payload["confidence"]), 3)
+
+    return payload
 
 
 # Keys whose names begin with `__` are the ONLY ones LangGraph refuses to copy
@@ -161,7 +234,36 @@ def build_graph(
             "diff_summary": ctx.diff_summary,
             "iterations": 0,
             "diagnosis": None,
+            "inconclusive_reason": ctx.inconclusive_reason,
+            "selection_notes": ctx.selection_notes,
             "messages": [HumanMessage(content=brief)],
+        }
+
+    # -- node 1b: nothing to diagnose, decided without a model ------------
+    def inconclusive(state: CIState) -> dict:
+        """Emit an honest non-answer.
+
+        There is no model call in this node, on purpose. Asking a model to
+        explain a failure that is not in the log does not produce silence --
+        it produces fluent hedging with a middling confidence score, which
+        reads exactly like a real diagnosis to anyone skimming. The only
+        reliable fix is to not ask the question.
+
+        The evidence is the tail of the log, quoted, so the user can confirm
+        for themselves that there is no error in it.
+        """
+        reason = state.get("inconclusive_reason") or "No failure could be located in this run."
+        tail = [ln.strip() for ln in (state.get("log_tail") or "").split("\n") if ln.strip()]
+        quoted = [ln for ln in tail if not ln.startswith(("[", "-----"))][-4:]
+        return {
+            "diagnosis": {
+                "category": "inconclusive",
+                "root_cause": reason,
+                "evidence": quoted or ["(the failing step produced no log output)"],
+                "confidence": 1,
+                "suggested_fix": "",
+                "fix_snippet": "",
+            }
         }
 
     # -- node 2: the reasoning loop --------------------------------------
@@ -212,18 +314,28 @@ def build_graph(
         ]
         result = structured.invoke(msgs)
         payload = result.model_dump() if isinstance(result, BaseModel) else dict(result)
-        return {"diagnosis": payload}
+        return {"diagnosis": enforce_honesty(payload)}
+
+    # -- gate: is there anything here to diagnose at all? -----------------
+    def has_failure(state: CIState) -> Literal["investigate", "inconclusive"]:
+        return "inconclusive" if state.get("inconclusive_reason") else "investigate"
 
     g = StateGraph(CIState)
     g.add_node("fetch_failure", fetch_failure)
+    g.add_node("inconclusive", inconclusive)
     g.add_node("investigate", investigate)
     g.add_node("tools", tool_node)
     g.add_node("diagnose", diagnose)
 
     g.add_edge(START, "fetch_failure")
-    g.add_edge("fetch_failure", "investigate")
+    g.add_conditional_edges(
+        "fetch_failure",
+        has_failure,
+        {"investigate": "investigate", "inconclusive": "inconclusive"},
+    )
     g.add_conditional_edges("investigate", route, {"tools": "tools", "diagnose": "diagnose"})
     g.add_edge("tools", "investigate")
+    g.add_edge("inconclusive", END)
     g.add_edge("diagnose", END)
 
     return g.compile(checkpointer=checkpointer), session

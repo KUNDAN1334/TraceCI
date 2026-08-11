@@ -94,20 +94,32 @@ DIAGNOSE_PROMPT = """\
 Write the final diagnosis now, from the evidence gathered above. Nothing new \
 may be introduced at this stage.
 
+FIRST, decide whether you actually found a cause. If the log contained no \
+error, or you could not connect any evidence to a specific change, the correct \
+answer is `category: inconclusive`, `confidence: 1`, and an EMPTY \
+`suggested_fix`. Say plainly what is missing. That is a useful answer and it \
+is the one being asked for -- do not reach for a plausible-sounding cause to \
+avoid saying you did not find one. "Check the configuration" is not a fix; it \
+is a guess that costs the reader more time than saying nothing.
+
 Rules:
   - `category`: pick from test_failure, dependency, config, infra, lint_type, \
-flaky, unknown. Classify by WHAT BROKE, not by which step failed. A test that \
-fails because a dependency resolved to a new major version is `dependency`.
+flaky, inconclusive. Classify by WHAT BROKE, not by which step failed. A test \
+that fails because a dependency resolved to a new major version is \
+`dependency`.
   - `root_cause`: 2-3 sentences, specific enough that someone who has not seen \
 the log knows exactly what to change. Name the file, the function and the \
 value. "A test failed" is not a root cause.
   - `evidence`: 2-5 items, each an EXACT quote from a log line you were shown \
 or a `file:line` reference from a file you actually opened. No paraphrasing, \
 no invented line numbers.
-  - `confidence`: 1-10. Be honest. 8+ only when the evidence pins the cause \
-without inference. If you could not open a file you wanted, that is a 5-6.
+  - `confidence`: 1-10, a claim about SOURCING rather than about how sure you \
+feel. 8+ only when the evidence pins the cause without inference. If you could \
+not open a file you wanted, that is a 5-6. If your root cause contains the \
+words "unclear", "might", "possibly" or "further investigation", the honest \
+score is 1-2 and the category is `inconclusive`.
   - `suggested_fix`: what to change, in one or two sentences, in the \
-imperative.
+imperative. EMPTY when the category is `inconclusive`.
   - `fix_snippet`: a minimal patch or corrected code block if you can write one \
 with confidence, otherwise an empty string. Never guess at code you have not \
 seen.

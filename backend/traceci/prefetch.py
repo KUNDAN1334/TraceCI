@@ -8,10 +8,11 @@ of green -> red. The agent's job begins where certainty ends.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
-from .github import GitHubClient, GitHubError, JobRef, StepRef
+from .github import FAILED_CONCLUSIONS, GitHubClient, GitHubError, JobRef, StepRef
 from .log_window import LogWindow, build_log_window
 from .models import NORMAL, ContextBudget
 from .repo_input import RepoRef
@@ -40,6 +41,15 @@ class FailureContext:
     diff_summary: str
     commit_subjects: list[str] = field(default_factory=list)
     changed_files: list[str] = field(default_factory=list)
+    # Why this run cannot be diagnosed, or "" when it can. Set by the
+    # deterministic layer so the agent is never asked to explain a failure
+    # that is not in front of it.
+    inconclusive_reason: str = ""
+    selection_notes: list[str] = field(default_factory=list)
+
+    @property
+    def diagnosable(self) -> bool:
+        return not self.inconclusive_reason
 
     @property
     def log_tail(self) -> str:
@@ -61,6 +71,8 @@ class FailureContext:
             "log_lines": self.log_window.total_lines,
             "anchor_line": self.log_window.anchor_line,
             "anchor_tier": self.log_window.tier,
+            "diagnosable": self.diagnosable,
+            "inconclusive_reason": self.inconclusive_reason,
         }
 
 
@@ -103,6 +115,55 @@ def summarise_diff(compare: dict, *, max_files: int = MAX_DIFF_FILES) -> tuple[s
     return "\n".join(lines), subjects, names
 
 
+# Lines that prove a job never got as far as running anything. A log made
+# entirely of these is a provisioning transcript, not a failure.
+_NEVER_RAN = re.compile(
+    r"(waiting for a (hosted )?runner|requested labels|job is about to start|"
+    r"job defined at|evaluating .*\.if|the operation was canceled|"
+    r"job was cancelled|no runner matching)",
+    re.I,
+)
+
+
+def why_inconclusive(window: LogWindow, step: StepRef | None) -> str:
+    """One sentence naming what is missing, or "" when the run is diagnosable.
+
+    This is the guard that stops the system inventing a cause. `find_anchor`
+    already reports tier 0 when the step log contains nothing error-shaped;
+    until now nothing acted on it, so a log with no error in it went to the
+    model anyway and came back as fluent hedging at a confidence that implied
+    it had found something. Detecting it here means the model is never asked
+    the question at all.
+    """
+    if window.total_lines == 0:
+        return (
+            "The failing step produced no log output at all, so there is no evidence "
+            "to reason from."
+        )
+
+    if window.found_error:
+        return ""
+
+    body = "\n".join(window.cleaned[-60:])
+    if _NEVER_RAN.search(body):
+        return (
+            "This job never started executing -- its log is runner-provisioning output "
+            "with no command output and no error. Nothing failed here that can be traced "
+            "to a change in the repository."
+        )
+
+    if step is None:
+        return (
+            "No step in this run recorded a failure, and the job log contains no "
+            "error-shaped line."
+        )
+
+    return (
+        f"The log for `{step.name}` contains no error-shaped line, so there is no "
+        "failure in it to trace back to a change."
+    )
+
+
 def prefetch(
     ref: RepoRef,
     token: str | None = None,
@@ -117,10 +178,14 @@ def prefetch(
     """
     gh = client or GitHubClient(ref.owner, ref.repo, token)
 
-    run = gh.get_run(ref.run_id) if ref.run_id else gh.latest_failed_run(ref.branch)
+    notes: list[str] = []
+    if ref.run_id:
+        run = gh.get_run(ref.run_id)
+    else:
+        run, notes = gh.select_failed_run(ref.branch)
     run_id = int(run["id"])
 
-    if ref.run_id and run.get("conclusion") not in {"failure", "timed_out", "startup_failure"}:
+    if ref.run_id and run.get("conclusion") not in FAILED_CONCLUSIONS:
         raise GitHubError(
             f"Run #{run.get('run_number')} concluded `{run.get('conclusion') or 'in progress'}`, "
             "not a failure. Pick a red run."
@@ -163,5 +228,7 @@ def prefetch(
         diff_summary=diff_summary,
         commit_subjects=subjects,
         changed_files=names,
+        inconclusive_reason=why_inconclusive(window, step_ref),
+        selection_notes=notes,
     )
     return ctx, gh

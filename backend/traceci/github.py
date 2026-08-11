@@ -33,6 +33,48 @@ class NoFailedRun(GitHubError):
     """We looked and there is no failed run to diagnose."""
 
 
+# Conclusions that represent a real red build. `cancelled`, `skipped`,
+# `neutral`, `stale` and `action_required` are red-ish in the UI but describe
+# something that never produced a failure to explain.
+FAILED_CONCLUSIONS = frozenset({"failure", "timed_out", "startup_failure"})
+
+# Events that are bot maintenance rather than somebody's code change. Their
+# logs are runner chatter and a diff against "last green" is meaningless,
+# because the run is not about a commit at all.
+_BOT_EVENTS = frozenset({"dependabot_security_updates", "dependabot_alerts"})
+
+# Dependabot names its own update jobs after the ecosystem and directory, e.g.
+# `npm_and_yarn in /web for nanoid - Update #1516931838`. Matching the name is
+# what separates those from an ordinary CI workflow that merely happens to be
+# running on a Dependabot pull request -- the latter is a genuine CI failure
+# and must NOT be skipped, which is why the run's actor is deliberately not
+# part of this test.
+_BOT_RUN_NAME = re.compile(
+    r"^(npm_and_yarn|pip|go_modules|github_actions|docker|bundler|cargo|composer|"
+    r"gradle|maven|nuget|terraform|submodules)\b.*\bUpdate #\d+",
+    re.I,
+)
+
+
+def undiagnosable_reason(run: dict) -> str | None:
+    """Why this red run is not worth diagnosing, or `None` if it is.
+
+    A pure function over the run payload, so the decision is testable without a
+    network call and the interface can quote the reason back to the user
+    instead of silently choosing something else.
+    """
+    event = (run.get("event") or "").lower()
+    name = run.get("name") or ""
+
+    if event in _BOT_EVENTS:
+        return "a Dependabot security-update run, not a CI run"
+    if _BOT_RUN_NAME.match(name.strip()):
+        return "a dependency-bump run, not a CI run"
+    if not run.get("head_sha"):
+        return "no head commit, so there is nothing to diff against"
+    return None
+
+
 @dataclass
 class StepRef:
     number: int
@@ -122,19 +164,71 @@ class GitHubClient:
 
     # -- runs / jobs ------------------------------------------------------
     def latest_failed_run(self, branch: str | None = None) -> dict:
-        """Most recent run whose conclusion is a failure, optionally on `branch`."""
+        """Most recent *diagnosable* failed run, optionally on `branch`."""
+        return self.select_failed_run(branch)[0]
+
+    def select_failed_run(self, branch: str | None = None) -> tuple[dict, list[str]]:
+        """`(run, notes)` -- the run to diagnose, and what was skipped to get it.
+
+        Not every red run is a CI failure worth diagnosing. Dependabot's
+        security-update runs are the common trap: they show as red on the
+        Actions tab, their logs contain runner-provisioning chatter and no
+        error at all, and picking one means diagnosing infrastructure instead
+        of the user's code. Repositories whose actual CI is green routinely
+        have several of these sitting at the top of the list, so "the most
+        recent failed run" quietly becomes "a Dependabot job that never ran".
+
+        `notes` exists so the interface can say which run was chosen and why,
+        rather than silently diagnosing something the user was not asking
+        about.
+        """
         params: dict[str, Any] = {"per_page": 30}
         if branch:
             params["branch"] = branch
         data = self._get(f"/repos/{self.slug}/actions/runs", **params)
         runs = data.get("workflow_runs", [])
-        bad = {"failure", "timed_out", "startup_failure"}
-        for run in runs:
-            if run.get("conclusion") in bad:
-                return run
+        failed = [r for r in runs if r.get("conclusion") in FAILED_CONCLUSIONS]
+
+        notes: list[str] = []
+        skipped = 0
+        chosen: dict | None = None
+        for run in failed:
+            reason = undiagnosable_reason(run)
+            if reason is None:
+                chosen = run
+                break
+            skipped += 1
+            if skipped <= 3:
+                notes.append(f"skipped run #{run.get('run_number')}: {reason}")
+
         where = f" on branch `{branch}`" if branch else ""
+
+        if chosen is not None:
+            newer_green = [
+                r for r in runs
+                if r.get("conclusion") == "success"
+                and (r.get("created_at") or "") > (chosen.get("created_at") or "")
+            ]
+            if newer_green:
+                notes.append(
+                    f"{len(newer_green)} newer run(s) succeeded; this failure is not the "
+                    "latest state of the repository"
+                )
+            return chosen, notes
+
         if not runs:
             raise NoFailedRun(f"No workflow runs found for {self.slug}{where}.")
+
+        if failed:
+            # Everything red was infrastructure noise. Saying "no failed run"
+            # here would contradict the red badges the user can see.
+            detail = "; ".join(notes) or "they are not diagnosable CI failures"
+            raise NoFailedRun(
+                f"{self.slug}{where} has {len(failed)} failed run(s), but none of them are "
+                f"CI failures TraceCI can diagnose ({detail}). "
+                "If you meant one of them, paste its run URL directly."
+            )
+
         raise NoFailedRun(
             f"No failed run found for {self.slug}{where}. "
             f"The {len(runs)} most recent runs are all green or still in progress."

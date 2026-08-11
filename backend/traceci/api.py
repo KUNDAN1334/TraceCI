@@ -205,14 +205,35 @@ async def analyze_stream(req: AnalyzeRequest, saver: Any,
                         f"Workflow `{update.get('workflow_name')}` failed",
                         f"{update.get('repo')} - run {update.get('run_id')}",
                     )
+                    # Do not claim an anchor that was not found. Saying "anchored
+                    # on the first real error" over a log with no error in it is
+                    # the interface telling the same lie the model used to.
+                    reason = update.get("inconclusive_reason") or ""
                     yield step(
                         "target",
                         f"First failing step: {update.get('failed_step')}",
-                        "log window anchored on the first real error",
+                        "no error-shaped line in this step's log"
+                        if reason
+                        else "log window anchored on the first real error",
                     )
                     first_line = (update.get("diff_summary") or "").split("\n")[1:2]
                     yield step("diff", "Diffed the last green commit against the failing one",
                                first_line[0].strip() if first_line else "")
+                    # "Why did it pick that run?" is the first question when the
+                    # repository looks green, so answer it unprompted.
+                    for note in (update.get("selection_notes") or [])[:4]:
+                        yield step("search", "Run selection", note)
+
+                elif node == "inconclusive":
+                    yield step(
+                        "ok",
+                        "Stopped before investigating",
+                        "there is no failure in this run to trace",
+                    )
+                    diagnosis = update.get("diagnosis")
+                    if diagnosis:
+                        yield sse({"type": "result", "diagnosis": diagnosis,
+                                   "thread_id": thread_id})
 
                 elif node == "investigate":
                     for m in update.get("messages") or []:
