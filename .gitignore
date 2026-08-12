@@ -23,6 +23,11 @@ out/
 .vercel/
 next-env.d.ts.tmp
 
+# eval runs are timestamped artifacts of a live model call, not source.
+# The harness and its expectations are versioned; the numbers it produced on
+# one afternoon against one provider quota are not.
+backend/evals/results/
+
 # os
 .DS_Store
 Thumbs.db
