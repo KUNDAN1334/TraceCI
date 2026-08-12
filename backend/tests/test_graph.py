@@ -19,6 +19,7 @@ from traceci.graph import (
     analysis_config,
     build_graph,
     count_tool_calls,
+    enforce_honesty,
     friendly_error,
 )
 from traceci.tools import ToolSession
@@ -123,15 +124,43 @@ def test_diagnose_returns_a_validated_diagnosis(gh_api):
     assert d.root_cause and d.suggested_fix
 
 
-def test_the_schema_rejects_nonsense():
+def test_the_schema_rejects_a_category_outside_the_literal():
     from pydantic import ValidationError
 
-    with pytest.raises(ValidationError):   # category outside the Literal
+    with pytest.raises(ValidationError):
         Diagnosis(category="vibes", root_cause="x", evidence=[], confidence=5,
                   suggested_fix="y")
-    with pytest.raises(ValidationError):   # confidence outside 1..10
-        Diagnosis(category="flaky", root_cause="x", evidence=[], confidence=42,
-                  suggested_fix="y")
+
+
+def test_confidence_is_normalised_by_the_pipeline_not_rejected_by_the_schema():
+    """This guarantee deliberately moved, and the move is the interesting part.
+
+    `confidence` used to carry `ge=1, le=10`, so an out-of-range value raised.
+    That looked stricter and was in fact worse: providers validate generated
+    tool arguments against this schema *server-side*, so a model emitting
+    `"9"` as a string got the whole analysis rejected with a 400 after twenty
+    seconds of real work -- an error the user can do nothing with.
+
+    A schema shared with a non-deterministic producer should be liberal in
+    what it accepts and strict about what it stores. So the schema now accepts
+    the range of junk models actually emit, and `enforce_honesty` clamps it in
+    exactly one place. The guarantee is unchanged from the caller's side: the
+    number reaching the UI is always an int in 1..10.
+    """
+    assert Diagnosis(category="flaky", root_cause="x", evidence=[], confidence=42,
+                     suggested_fix="y").confidence == 42
+
+    for raw in (42, "9", 9.0, "high", -3):
+        out = enforce_honesty({
+            "category": "flaky",
+            "root_cause": "A shared fixture leaks state between tests.",
+            "evidence": ["FAILED tests/test_a.py::test_one"],
+            "confidence": raw,
+            "suggested_fix": "Reset the fixture.",
+            "fix_snippet": "",
+        })
+        assert isinstance(out["confidence"], int)
+        assert 1 <= out["confidence"] <= 10, f"{raw!r} -> {out['confidence']}"
 
 
 # -- checkpointer ----------------------------------------------------------

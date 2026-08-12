@@ -99,7 +99,25 @@ class Diagnosis(BaseModel):
     evidence: list[str] = Field(
         description="2-5 exact log lines or file:line references. Quotes, never paraphrase."
     )
-    confidence: int = Field(ge=1, le=10, description="1-10; 8+ only when nothing is inferred.")
+    # Deliberately `int | str`, and it costs a paragraph to explain why.
+    #
+    # Providers validate generated tool arguments against this schema before
+    # the response ever reaches us. Groq is strict: a model that emits
+    # `"confidence": "9"` -- which the smaller ones do routinely -- gets a 400
+    # and the whole analysis dies after twenty seconds of real work, with a
+    # provider error the user cannot act on.
+    #
+    # A schema is a wire contract with a non-deterministic producer, so it
+    # should be liberal in what it accepts and strict about what it stores.
+    # The widening is paid back immediately in `enforce_honesty`, which
+    # coerces and clamps in exactly one place.
+    confidence: int | str = Field(
+        default=1,
+        description=(
+            "Integer from 1 to 10 -- emit a bare number, not a quoted string. "
+            "8+ only when nothing is inferred."
+        ),
+    )
     suggested_fix: str = Field(
         default="",
         description=(
@@ -123,6 +141,26 @@ _HEDGES = re.compile(
     r"related to|no error message|insufficient (information|evidence)|without more)",
     re.I,
 )
+
+
+def _as_score(value: Any, *, default: int = 1) -> int:
+    """Coerce whatever the model called a confidence into 1-10.
+
+    Seen in the wild across providers: `9`, `"9"`, `9.0`, `"9/10"`, `"high"`.
+    A bare `int()` raises on three of those, and a ValueError here would throw
+    away a diagnosis that is otherwise complete -- so unparseable falls back to
+    the *lowest* score rather than a middling one. If we cannot tell how sure
+    the model was, we are not entitled to imply it was fairly sure.
+    """
+    if isinstance(value, bool):
+        return default
+    if isinstance(value, (int, float)):
+        return max(1, min(10, int(value)))
+    text = str(value or "").strip()
+    match = re.search(r"\d+", text)
+    if not match:
+        return default
+    return max(1, min(10, int(match.group())))
 
 
 def _strip_fence(value: Any) -> str:
@@ -165,11 +203,11 @@ def enforce_honesty(payload: dict) -> dict:
 
     if hedged or category in {"unknown", "inconclusive"}:
         payload["category"] = "inconclusive"
-        payload["confidence"] = min(int(payload.get("confidence") or 1), 2)
+        payload["confidence"] = min(_as_score(payload.get("confidence")), 2)
         payload["suggested_fix"] = ""
         payload["fix_snippet"] = ""
     else:
-        payload["confidence"] = max(1, min(10, int(payload.get("confidence") or 1)))
+        payload["confidence"] = _as_score(payload.get("confidence"))
 
     # Models routinely wrap `fix_snippet` in a markdown fence even though the
     # field is declared as a patch. The frontend renders it verbatim, so the
@@ -183,7 +221,7 @@ def enforce_honesty(payload: dict) -> dict:
         re.search(r"process completed with exit code|operation was canceled", e, re.I)
         for e in evidence
     ):
-        payload["confidence"] = min(int(payload["confidence"]), 3)
+        payload["confidence"] = min(_as_score(payload["confidence"]), 3)
 
     return payload
 

@@ -203,6 +203,27 @@ def test_a_well_sourced_diagnosis_is_left_alone():
     assert out == good
 
 
+def test_a_confidence_that_is_not_an_integer_is_coerced_not_fatal():
+    """Found by the eval harness on its first run: Groq validates tool
+    arguments server-side and 400s on `"confidence": "9"`, which the smaller
+    models emit routinely. The schema now accepts it; this is the coercion."""
+    for raw, want in [(9, 9), ("9", 9), (9.0, 9), ("9/10", 9), ("high", 1), (None, 1), (99, 10)]:
+        out = enforce_honesty({**HEDGED, "category": "test_failure",
+                               "root_cause": "auth.py:refresh() returns a dict.",
+                               "confidence": raw})
+        assert isinstance(out["confidence"], int)
+        assert out["confidence"] == want, f"{raw!r} -> {out['confidence']}, want {want}"
+
+
+def test_an_unreadable_confidence_falls_back_to_the_lowest_score():
+    """If we cannot tell how sure the model was, we are not entitled to imply
+    it was fairly sure."""
+    out = enforce_honesty({**HEDGED, "category": "test_failure",
+                           "root_cause": "auth.py:refresh() returns a dict.",
+                           "confidence": "pretty sure"})
+    assert out["confidence"] == 1
+
+
 def test_a_fenced_snippet_is_unwrapped_before_it_reaches_the_ui():
     """Models wrap `fix_snippet` in a markdown fence even though the field is
     declared as a patch; rendered verbatim, the fence splits the block."""
