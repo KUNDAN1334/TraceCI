@@ -252,21 +252,69 @@ class GitHubClient:
 
     @staticmethod
     def first_failing(jobs: list[JobRef]) -> tuple[JobRef, StepRef | None]:
-        """First failing job, and within it the lowest-numbered failing step.
+        """The job that actually failed, and the first step in it that failed.
 
         "First failing step" is the whole game: it is what separates
         "dependency resolution blew up" from "a test regressed", and the log
         for that one step is a hundredth the size of the job log.
+
+        Cancelled is ranked below failed, and that ordering is the point. When
+        one job fails, GitHub cancels its siblings -- and a cancelled job that
+        never got a runner has a log consisting entirely of "Waiting for a
+        runner to pick up this job...". Treating cancelled and failed as one
+        bucket and taking the first match therefore picks the collateral damage
+        over the cause whenever the cancelled job happens to sort first, and
+        hands the agent eight lines of provisioning output with no error in
+        them. A cancelled job is only ever the answer when nothing else failed.
         """
-        bad = {"failure", "timed_out", "cancelled"}
+        hard = {"failure", "timed_out"}
+        soft = {"cancelled"}
+
+        def first_step(job: JobRef, pool: set[str]) -> StepRef | None:
+            failing = sorted(
+                (s for s in job.steps if s.conclusion in pool), key=lambda s: s.number
+            )
+            return failing[0] if failing else None
+
         for job in jobs:
-            if job.conclusion in bad:
-                failing = [s for s in job.steps if s.conclusion in bad]
-                failing.sort(key=lambda s: s.number)
-                return job, (failing[0] if failing else None)
+            if job.conclusion in hard:
+                # Within a failed job, later steps are usually cancelled as a
+                # consequence; the failed one is the cause.
+                return job, (first_step(job, hard) or first_step(job, soft))
+
+        for job in jobs:
+            if job.conclusion in soft:
+                return job, first_step(job, soft)
+
         if not jobs:
             raise GitHubError("This run has no jobs -- nothing to diagnose.")
         return jobs[0], None
+
+    @staticmethod
+    def pick_job_log(archive: dict[str, str], job_name: str) -> tuple[str, str]:
+        """The whole-job log, used as a fallback when a step log has no error.
+
+        The per-step split is a convenience, not a guarantee: step numbering in
+        the zip can diverge from the API's, and some actions write their real
+        output into a neighbouring step's file. When the step log turns out to
+        contain no error, the job log certainly does, and reading it is far
+        better than reporting that nothing failed.
+        """
+        def norm(s: str) -> str:
+            return re.sub(r"[^a-z0-9]+", "", s.lower())
+
+        key = norm(job_name)
+        # Top-level entries (no directory part) are the whole-job transcripts.
+        for path in sorted(p for p in archive if "/" not in p):
+            if key and key in norm(path):
+                return path, archive[path]
+
+        steps = sorted(
+            (p for p in archive if "/" in p and norm(p.split("/", 1)[0]) == key)
+        )
+        if steps:
+            return f"{job_name} (all steps)", "\n".join(archive[p] for p in steps)
+        return "", ""
 
     # -- logs -------------------------------------------------------------
     def download_run_log_archive(self, run_id: int) -> dict[str, str]:
