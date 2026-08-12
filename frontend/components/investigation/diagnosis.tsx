@@ -55,6 +55,11 @@ function NoCausePanel({ diagnosis }: { diagnosis: Diagnosis }) {
           <SectionLabel className="mb-2">What to try</SectionLabel>
           <ul className="space-y-2 text-[13.5px] leading-relaxed text-fg-muted">
             <li>
+              If the job never started — no runner became available, or it was cancelled because
+              a sibling job failed first — re-run the workflow. There is no failure to explain
+              until something actually executes.
+            </li>
+            <li>
               If you had a specific red run in mind, paste its URL into the repository field —
               that pins the investigation to that run instead of the most recent failure.
             </li>

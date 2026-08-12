@@ -137,6 +137,13 @@ export type Action =
 
 /** The stream stops emitting while `diagnose` runs; after this long, say so. */
 const QUIET_BEFORE_DIAGNOSING_MS = 1400;
+/**
+ * Total silence for this long means the run is gone, not thinking. Generous
+ * enough to cover the slowest real gap -- downloading and unzipping a large
+ * log archive before the first model call -- and short enough that nobody
+ * sits watching a dead spinner.
+ */
+const STALL_MS = 90_000;
 /** Reasoning is prose, not a log. Cap it so a runaway model cannot eat memory. */
 const MAX_REASONING_CHARS = 40_000;
 
@@ -195,6 +202,24 @@ export function reduce(state: InvestigationState, action: Action): Investigation
 
     case "tick": {
       if (state.status !== "running" && state.status !== "starting") return state;
+      // A run that has sent nothing at all for this long is not slow, it is
+      // broken -- a cancelled replay, a dropped stream, a proxy that closed
+      // without sending `done`. Failing loudly beats a spinner that never
+      // resolves and gives the reader nothing to act on.
+      if (state.startedAt && action.at - state.lastEventAt > STALL_MS) {
+        const phases = { ...state.phases };
+        for (const id of PHASE_ORDER) if (phases[id] === "active") phases[id] = "failed";
+        return {
+          ...state,
+          status: "failed",
+          phases,
+          endedAt: action.at,
+          now: action.at,
+          error:
+            "The investigation stopped sending updates, so it has been abandoned. " +
+            "Nothing was lost — start it again, or replay the recorded run.",
+        };
+      }
       let next = { ...state, now: action.at };
       // The graph goes quiet between the last tool result and the structured
       // diagnosis. Saying "composing the diagnosis" beats an idle spinner.

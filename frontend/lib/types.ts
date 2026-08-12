@@ -124,9 +124,13 @@ export function categoryMeta(category: string) {
  * "Suggested fix" is how a non-answer gets mistaken for an answer.
  */
 export function isInconclusive(diagnosis: Diagnosis): boolean {
-  return (
-    diagnosis.category === "inconclusive" ||
-    diagnosis.category === "unknown" ||
-    diagnosis.confidence <= 2
-  );
+  // Driven by the explicit signal, not by the score. An earlier version also
+  // treated `confidence <= 2` on its own as inconclusive, which is wrong: a
+  // real, correctly-identified cause can carry a low score when the agent had
+  // to infer a link, and that is exactly the case where the reader most needs
+  // to see the evidence and the fix. A low score now only counts when the
+  // result also names no fix -- i.e. when nothing was actually concluded.
+  if (diagnosis.category === "inconclusive") return true;
+  if (diagnosis.category === "unknown" && !diagnosis.suggested_fix?.trim()) return true;
+  return diagnosis.confidence <= 2 && !diagnosis.suggested_fix?.trim();
 }

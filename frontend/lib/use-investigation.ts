@@ -35,6 +35,7 @@ export function useInvestigation(onFinished?: (state: InvestigationState) => voi
   const [state, dispatch] = useReducer(reduce, undefined, initialState);
   const abortRef = useRef<AbortController | null>(null);
   const runToken = useRef(0);
+  const mounted = useRef(true);
   const finishedRef = useRef(onFinished);
   const notifiedFor = useRef(-1);
 
@@ -42,15 +43,25 @@ export function useInvestigation(onFinished?: (state: InvestigationState) => voi
     finishedRef.current = onFinished;
   }, [onFinished]);
 
-  // Cancel any in-flight work if the workspace unmounts mid-run. Without this
-  // a replay keeps firing timers into a dead component.
-  useEffect(
-    () => () => {
-      runToken.current += 1;
+  // Cancel any in-flight work if the workspace unmounts mid-run, so a replay
+  // does not keep firing timers into a dead component.
+  //
+  // The flag is re-armed on setup rather than the run token being bumped on
+  // teardown, and that distinction is load-bearing. React StrictMode runs
+  // effects as setup -> cleanup -> setup in development. Bumping the token in
+  // the cleanup invalidated a replay that had just been started by another
+  // effect during the same mount, so the auto-started run from `#replay`
+  // dispatched its first event and then silently cancelled itself -- the trace
+  // sat on "Locate the run" forever with nothing to indicate anything was
+  // wrong. Assigning `true` on setup survives the double-invoke; incrementing
+  // a counter does not.
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
       abortRef.current?.abort();
-    },
-    []
-  );
+    };
+  }, []);
 
   // Drives the elapsed clock and the "composing the diagnosis" hint.
   const running = isRunning(state.status);
@@ -95,18 +106,21 @@ export function useInvestigation(onFinished?: (state: InvestigationState) => voi
   /** Replay the captured stream. No key, no backend, same reducer. */
   const startReplay = useCallback(async () => {
     const token = begin("replay", {
-      repo: "kundan/traceme-lab",
+      repo: "KUNDAN1334/traceme-lab",
       branch: "break/subtle",
       model: "recorded",
     });
     try {
-      const res = await fetch("/demo-stream.json", { cache: "force-cache" });
+      const res = await fetch("/demo-stream.json");
       if (!res.ok) throw new Error(`The recorded run could not be loaded (${res.status}).`);
       const frames = (await res.json()) as RecordedFrame[];
+      if (!Array.isArray(frames) || frames.length === 0) {
+        throw new Error("The recorded run is empty.");
+      }
       for (const frame of frames) {
-        if (runToken.current !== token) return;
+        if (runToken.current !== token || !mounted.current) return;
         await new Promise((r) => setTimeout(r, frame.delay_ms));
-        if (runToken.current !== token) return;
+        if (runToken.current !== token || !mounted.current) return;
         dispatch({ type: "event", event: frame.event, at: Date.now() });
       }
     } catch (err) {
@@ -157,7 +171,7 @@ export function useInvestigation(onFinished?: (state: InvestigationState) => voi
         for (;;) {
           const { done, value } = await reader.read();
           if (done) break;
-          if (runToken.current !== token) {
+          if (runToken.current !== token || !mounted.current) {
             await reader.cancel().catch(() => undefined);
             return;
           }
