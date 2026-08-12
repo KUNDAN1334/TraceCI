@@ -270,8 +270,6 @@ cd ../frontend
 npm install && npm run dev              # :3000
 ```
 
-Deployment (Vercel + Render, free tier, ~30 minutes): **[DEPLOY.md](DEPLOY.md)**.
-Day-to-day usage and troubleshooting: **[HOW_TO_RUN.md](HOW_TO_RUN.md)**.
 
 ---
 
