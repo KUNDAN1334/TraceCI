@@ -198,6 +198,19 @@ def prefetch(
     log_path, step_log = GitHubClient.pick_step_log(archive, job.name, step)
     window = build_log_window(step_log, max_chars=budget.log_window_chars)
 
+    # The step log is the sharp instrument, but it is not infallible: the zip's
+    # step numbering can diverge from the API's, and some actions write their
+    # real output into a neighbouring step's file. Before concluding that
+    # nothing failed, re-read the whole job. Reporting "no cause found" while
+    # the traceback sits one file away in the same archive is the worst
+    # outcome available -- it is wrong AND it sounds careful.
+    if not window.found_error:
+        job_log_path, job_log = GitHubClient.pick_job_log(archive, job.name)
+        if job_log:
+            wider = build_log_window(job_log, max_chars=budget.log_window_chars)
+            if wider.found_error:
+                log_path, window = job_log_path, wider
+
     head_sha = run.get("head_sha") or ""
     base_sha, base_source = gh.last_green_sha(run)
     try:
