@@ -1,15 +1,16 @@
-# TraceCI
+<p align="center">
+<img width="1880" height="907" alt="image" src="https://github.com/user-attachments/assets/d7d3bb48-6474-4ffd-98c5-e475f4cc8595" />
+</p>
+
+<h1 align="center">TraceCI</h1>
 
 **An agent that reads a failed GitHub Actions run and tells you which change
 broke the build — with the log lines that prove it.**
 
 Read-only. Bounded to six tool calls. And it tells you when it doesn't know.
 
-[**Live demo →**](https://your-project.vercel.app/investigate#replay) · no API key needed
+[**Live demo →**](https://trace-ci.vercel.app/) · no API key needed
 &nbsp;·&nbsp;
-[Try it on your repo →](https://your-project.vercel.app/investigate)
-&nbsp;·&nbsp;
-[Docs →](https://your-project.vercel.app/docs)
 
 ---
 
@@ -124,36 +125,8 @@ cause is reachable only by deciding to open `app/auth.py`.
 
 ## Architecture
 
-```
-  ┌──────────────┐   POST /analyze (SSE)   ┌──────────────┐
-  │ Next.js      │ ──────────────────────► │ FastAPI      │
-  │ (Vercel)     │ ◄────────────────────── │ (Render)     │
-  └──────────────┘   step / token / result └──────┬───────┘
-                                                  │
-                                    LangGraph, SQLite checkpointer
-```
+<img width="856" height="190" alt="image" src="https://github.com/user-attachments/assets/6ea203e9-49da-4d5f-bc2a-d67d7b04ab54" />
 
-```mermaid
-graph TD;
-    __start__([__start__]):::first
-    fetch_failure(fetch_failure)
-    inconclusive(inconclusive)
-    investigate(investigate)
-    tools(tools)
-    diagnose(diagnose)
-    __end__([__end__]):::last
-    __start__ --> fetch_failure;
-    fetch_failure -.-> investigate;
-    fetch_failure -.-> inconclusive;
-    investigate -.-> diagnose;
-    investigate -.-> tools;
-    tools --> investigate;
-    inconclusive --> __end__;
-    diagnose --> __end__;
-    classDef default fill:#f2f0ff,line-height:1.2
-    classDef first fill-opacity:0
-    classDef last fill:#bfb6fc
-```
 
 **`fetch_failure` contains no LLM.** Finding the failed run, the first failing
 job and *step*, downloading the log zip, resolving the last green commit and
