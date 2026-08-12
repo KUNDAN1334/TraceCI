@@ -1,20 +1,54 @@
-# Render blueprint. `New +` -> `Blueprint` -> point at this repo.
+# Render Blueprint for the TraceCI API.
+#
+# The frontend does NOT go here -- it goes to Vercel. Two hosts, because the
+# frontend is 20 static pages that belong on a CDN, and the backend is a
+# long-lived Python process holding SSE connections open for 15-45 seconds.
+#
+# To use: Render dashboard -> New -> Blueprint -> point it at this repo.
+# Everything below is applied automatically except the secrets, which Render
+# will prompt for (`sync: false` means "ask me, never read it from git").
+
 services:
   - type: web
     name: traceci-api
-    runtime: docker
+    runtime: python
     plan: free
     rootDir: backend
-    dockerfilePath: ./Dockerfile
+    region: oregon # Frankfurt/Singapore also free; pick the one near you.
+
+    buildCommand: pip install -r requirements.txt
+    # $PORT is injected by Render. Binding to 0.0.0.0 is required -- localhost
+    # is not reachable from outside the container.
+    startCommand: uvicorn traceci.api:app --host 0.0.0.0 --port $PORT
+
+    # /health is cheap, has no side effects and touches no external service,
+    # which is exactly what a health check should be.
     healthCheckPath: /health
+
     envVars:
-      # Classic PAT, `public_repo` scope only. Set it in the dashboard --
-      # sync: false means Render will prompt rather than store it here.
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+
+      # A fine-grained PAT with read-only Actions + Contents. Without one the
+      # API is limited to GitHub's unauthenticated 60 requests/hour, and a
+      # single investigation spends several.
       - key: GITHUB_TOKEN
         sync: false
-      # Must match the deployed Vercel URL exactly, scheme included, no
-      # trailing slash, or the browser will block every request.
+
+      # Must list the exact Vercel origin, no trailing slash. This is the
+      # single most common reason a working backend still shows "API
+      # unreachable" in the browser.
       - key: ALLOWED_ORIGINS
         sync: false
+
+      # Free instances have an ephemeral filesystem, so this database is lost
+      # on every restart and redeploy. That is survivable by design: the
+      # checkpoint only powers re-opening a finished investigation by id, and
+      # the frontend already renders a "not on the server" state and falls
+      # back to the copy in the browser.
       - key: TRACECI_DB
-        value: /app/traceci_checkpoints.sqlite
+        value: /tmp/traceci_checkpoints.sqlite
+
+# No model API keys anywhere in this file, and none in the environment.
+# TraceCI is bring-your-own-key: the key arrives in a request body, lives in
+# one config dict for the duration of one analysis, and is gone.
