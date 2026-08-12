@@ -31,7 +31,7 @@ export const SAMPLE_DIAGNOSIS: Diagnosis = {
 };
 
 export const SAMPLE_TRACE: { icon: string; label: string; detail: string }[] = [
-  { icon: "search", label: "Located the failed run", detail: "kundan/traceme-lab · break/subtle" },
+  { icon: "search", label: "Located the failed run", detail: "KUNDAN1334/traceme-lab · break/subtle" },
   { icon: "target", label: "First failing step: Run tests", detail: "log window anchored on the first real error" },
   { icon: "diff", label: "Diffed last green → failing commit", detail: "2 files changed across 1 commit" },
   { icon: "check", label: "Opened app/auth.py", detail: "the agent chose this" },
@@ -42,25 +42,25 @@ export const SAMPLE_TRACE: { icon: string; label: string; detail: string }[] = [
 export const EXAMPLE_TARGETS = [
   {
     label: "Subtle regression",
-    repo: "kundan/traceme-lab",
+    repo: "KUNDAN1334/traceme-lab",
     branch: "break/subtle",
     hint: "Traceback blames the test; the bug is in a return type two files away. Needs a file read.",
   },
   {
     label: "Bad dependency",
-    repo: "kundan/traceme-lab",
+    repo: "KUNDAN1334/traceme-lab",
     branch: "break/dependency",
     hint: "The resolver already printed the answer. A correct run uses zero tool calls.",
   },
   {
     label: "Lint / type error",
-    repo: "kundan/traceme-lab",
+    repo: "KUNDAN1334/traceme-lab",
     branch: "break/lint_type",
     hint: "Fails at the Lint step, before any test executes.",
   },
   {
     label: "Broken workflow config",
-    repo: "kundan/traceme-lab",
+    repo: "KUNDAN1334/traceme-lab",
     branch: "break/config",
     hint: "Fails at Set up Python. Nothing is wrong with the application code.",
   },

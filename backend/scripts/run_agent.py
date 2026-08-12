@@ -15,8 +15,8 @@ tuning. Expected counts:
 5-6 calls everywhere means the prompt is causing over-calling. 0 on `subtle`
 means the agent is lazy and its answer is wrong even if it sounds right.
 
-    python scripts/run_agent.py kundan/traceme-lab --branch break/subtle
-    python scripts/run_agent.py https://github.com/kundan/traceme-lab/actions/runs/123
+    python scripts/run_agent.py KUNDAN1334/traceme-lab --branch break/subtle
+    python scripts/run_agent.py https://github.com/KUNDAN1334/traceme-lab/actions/runs/123
 """
 
 from __future__ import annotations

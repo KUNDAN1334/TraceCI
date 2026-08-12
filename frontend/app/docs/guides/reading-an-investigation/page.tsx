@@ -28,7 +28,7 @@ export default function ReadingPage() {
 
       <h2 id="trace">What the agent did</h2>
       <Sample title="investigation trace">
-        {`⌕  Looking up kundan/traceme-lab        finding the most recent failed run
+        {`⌕  Looking up KUNDAN1334/traceme-lab   finding the most recent failed run
 ◉  Workflow \`CI\` failed                 run 15938201234
 ◎  First failing step: Run tests         log window anchored on the first real error
 ±  Diffed last green -> failing          2 file(s) changed across 1 commit(s)

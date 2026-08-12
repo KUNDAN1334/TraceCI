@@ -4,7 +4,7 @@
   "event": {
    "type": "step",
    "icon": "search",
-   "label": "Looking up kundan/traceme-lab",
+   "label": "Looking up KUNDAN1334/traceme-lab",
    "detail": "finding the most recent failed run"
   }
  },
@@ -14,7 +14,7 @@
    "type": "step",
    "icon": "run",
    "label": "Workflow `CI` failed",
-   "detail": "kundan/traceme-lab - run 15938201234"
+   "detail": "KUNDAN1334/traceme-lab - run 15938201234"
   }
  },
  {

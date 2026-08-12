@@ -79,7 +79,7 @@ export function HeroTerminal() {
           <span className="h-[9px] w-[9px] rounded-full bg-line-strong" />
           <span className="h-[9px] w-[9px] rounded-full bg-line-strong" />
         </span>
-        <span className="ml-1.5 truncate">kundan/traceme-lab · run 15938201234</span>
+        <span className="ml-1.5 truncate">KUNDAN1334/traceme-lab · run 15938201234</span>
         <span className="ml-auto flex items-center gap-2 text-fg">
           <span
             aria-hidden
