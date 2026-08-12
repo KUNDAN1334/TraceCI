@@ -125,6 +125,23 @@ _HEDGES = re.compile(
 )
 
 
+def _strip_fence(value: Any) -> str:
+    """Remove a wrapping markdown code fence from a snippet.
+
+    ```` ```python ```` on the first line and ```` ``` ```` on the last is the
+    shape models reach for when asked for code, regardless of the field being
+    declared as a raw patch.
+    """
+    text = str(value or "").strip()
+    if not text.startswith("```"):
+        return text
+    lines = text.split("\n")
+    lines = lines[1:]                       # drop the opening fence + language
+    if lines and lines[-1].strip().startswith("```"):
+        lines = lines[:-1]
+    return "\n".join(lines).strip("\n")
+
+
 def enforce_honesty(payload: dict) -> dict:
     """Make the returned confidence and category consistent with the prose.
 
@@ -153,6 +170,11 @@ def enforce_honesty(payload: dict) -> dict:
         payload["fix_snippet"] = ""
     else:
         payload["confidence"] = max(1, min(10, int(payload.get("confidence") or 1)))
+
+    # Models routinely wrap `fix_snippet` in a markdown fence even though the
+    # field is declared as a patch. The frontend renders it verbatim, so the
+    # fence ends up on screen and splits the block in half.
+    payload["fix_snippet"] = _strip_fence(payload.get("fix_snippet"))
 
     # Evidence that is only the universal exit-code trailer establishes
     # nothing, and a high score on top of it is unsupportable.
