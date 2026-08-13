@@ -24,6 +24,7 @@ from .github import GitHubClient, GitHubError
 from .log_window import clean_log, slice_log
 from .models import NORMAL, ContextBudget
 from .prefetch import FailureContext
+from .redact import redact
 
 MAX_FILE_CHARS = 12_000
 MAX_DIFF_CHARS = 12_000
@@ -86,10 +87,21 @@ def build_tools(session: ToolSession) -> list[BaseTool]:
     """Bind the five read-only tools to one (late-filled) failure session."""
 
     def _read(path: str) -> str:
+        """Every byte of repository content the agent sees passes through here.
+
+        Redacted for the same reason the log is: repositories contain committed
+        credentials more often than anyone would like -- a checked-in `.env`, a
+        fixture with a real token, a hardcoded key in a config someone meant to
+        remove. Without this the agent could quote one as evidence, which would
+        put it on screen and in the checkpoint.
+
+        One funnel serves both `read_file` and `search_code`, so neither can be
+        forgotten later.
+        """
         gh, ctx = session.require()
         path = path.lstrip("/")
         if path not in session.file_cache:
-            session.file_cache[path] = gh.get_file(path, ctx.head_sha)
+            session.file_cache[path] = redact(gh.get_file(path, ctx.head_sha))
         return session.file_cache[path]
 
     def _full_compare() -> dict:

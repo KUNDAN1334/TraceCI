@@ -43,6 +43,21 @@ export type HistoryRecord = {
   steps: TraceStep[];
 };
 
+/**
+ * Last line of defence before anything is written to disk in the browser.
+ *
+ * The server redacts everything it sends, but the repository string is typed
+ * locally and stored locally without ever making a round trip when a run fails
+ * early. A tokenised clone URL on the clipboard is a normal thing to paste, so
+ * this makes sure one cannot end up sitting in localStorage indefinitely.
+ */
+const SECRET_SHAPES =
+  /(gh[pousr]_[A-Za-z0-9]{16,}|github_pat_[A-Za-z0-9_]{20,}|sk-(?:ant-)?[A-Za-z0-9_-]{16,}|gsk_[A-Za-z0-9]{16,}|AIza[A-Za-z0-9_-]{30,})/g;
+
+function scrub(value: string): string {
+  return value ? value.replace(SECRET_SHAPES, "[redacted]") : value;
+}
+
 function read(): HistoryRecord[] {
   if (typeof window === "undefined") return [];
   try {
@@ -81,8 +96,8 @@ export function recordFromState(state: InvestigationState): HistoryRecord | null
     threadId: state.threadId || null,
     mode: state.mode,
     status,
-    repo: state.context.repo || state.target.repo || "unknown",
-    branch: state.target.branch,
+    repo: scrub(state.context.repo || state.target.repo || "unknown"),
+    branch: scrub(state.target.branch),
     model: state.target.model,
     workflow: state.context.workflow,
     failedStep: state.context.failedStep,

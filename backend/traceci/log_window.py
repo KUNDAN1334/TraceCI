@@ -28,6 +28,8 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
+from .redact import redact
+
 # --------------------------------------------------------------------------
 # cleaning
 # --------------------------------------------------------------------------
@@ -44,10 +46,25 @@ def strip_ansi(text: str) -> str:
 
 
 def clean_log(text: str, *, drop_workflow_commands: bool = True) -> list[str]:
-    """ANSI-strip, de-timestamp, and drop `##[group]`-style scaffolding."""
+    """ANSI-strip, de-timestamp, redact, and drop `##[group]` scaffolding.
+
+    Redaction happens here because this is the single funnel every byte of log
+    passes through: the window handed to the model, the slices `get_more_log`
+    returns, the `log_tail` written to the checkpoint, and the evidence quoted
+    back on screen. Filtering downstream would mean four places to remember.
+
+    Worth doing even though Actions masks secrets as `***`: it only masks
+    values *registered* as secrets. A token echoed from an ordinary variable,
+    printed by a verbose HTTP client, or embedded in a URL in a stack trace is
+    not masked, and would otherwise be quoted verbatim as evidence, persisted
+    to the checkpoint, and sent to a third-party model provider.
+
+    A credential is never the root cause of a build failure, so removing one
+    costs no diagnostic value.
+    """
     out: list[str] = []
     for raw in strip_ansi(text).split("\n"):
-        line = _TS.sub("", raw).rstrip()
+        line = redact(_TS.sub("", raw).rstrip())
         if drop_workflow_commands and _WORKFLOW_CMD_DROP.match(line):
             continue
         out.append(line)
