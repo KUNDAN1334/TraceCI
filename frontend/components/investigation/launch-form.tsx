@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Callout, ErrorState, Spinner } from "@/components/ui/feedback";
-import { Select, TextInput } from "@/components/ui/form";
+import { SecretInput, Select, TextInput } from "@/components/ui/form";
 import { Panel, PanelBody, PanelHeader, SectionLabel } from "@/components/ui/panel";
 import { explainNetworkError, fetchModels, validateKey } from "@/lib/api";
 import { cn } from "@/lib/cn";
@@ -268,17 +268,14 @@ export function LaunchForm({
             ))}
           </Select>
 
-          <TextInput
+          {/* SecretInput, not a password field. A `type="password"` input
+              inside a form makes Chrome offer to save the value to Google
+              Password Manager on submit -- so a provider API key ended up in
+              the user's password vault, labelled with the branch name it took
+              from the field above. `autocomplete="new-password"` stops the
+              autofill but not the save prompt. */}
+          <SecretInput
             label="API key"
-            type="password"
-            mono
-            name="traceci-provider-key"
-            // `new-password` is the sanctioned way to tell a browser that a
-            // masked field is not a login credential. It suppresses both the
-            // username autofill and the "save password?" prompt.
-            autoComplete="new-password"
-            data-1p-ignore
-            data-lpignore="true"
             value={apiKey}
             onChange={(e) => {
               setApiKey(e.target.value);
