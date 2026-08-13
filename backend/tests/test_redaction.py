@@ -145,6 +145,36 @@ def test_a_committed_credential_in_a_repository_file_is_redacted_before_the_agen
     assert "gsk_" not in "\n".join(clean_log(contents))
 
 
+def test_a_rate_limit_becomes_a_next_step_not_raw_provider_json():
+    """Observed live: a 429 during an analysis produced the provider's raw JSON
+    blob -- organisation id included, truncated mid-word -- because only key
+    validation classified provider errors. The user is least able to act on a
+    raw error at the moment it costs them the most."""
+
+    class RateLimitError(Exception):
+        pass
+
+    out = friendly_error(RateLimitError(
+        "Error code: 429 - {'error': {'message': 'Rate limit reached for model "
+        "`llama-3.3-70b-versatile` in organization `org_01jknmh27gfara8c14gskrx0b3` "
+        "service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 100000"
+    ))
+    assert "org_01" not in out
+    assert "{" not in out
+    assert "daily token allowance" in out
+
+
+def test_a_per_minute_limit_is_distinguished_from_a_per_day_one():
+    """The remedies are a minute and a day apart, so the message must differ."""
+
+    class RateLimitError(Exception):
+        pass
+
+    per_minute = friendly_error(RateLimitError("429 rate limit on tokens per minute (TPM)"))
+    assert "wait about a minute" in per_minute
+    assert "daily" not in per_minute
+
+
 def test_a_tokenised_clone_url_is_not_echoed_back_to_the_browser():
     """`https://ghp_xxx@github.com/owner/repo` is a normal thing to have on a
     clipboard. It used to be echoed into the first SSE step verbatim."""

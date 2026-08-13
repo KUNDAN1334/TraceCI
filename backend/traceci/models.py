@@ -253,6 +253,41 @@ def looks_like_a_placeholder(value: str | None) -> bool:
     return any(m.lower() in low for m in _PLACEHOLDER_MARKERS)
 
 
+def classify_provider_error(exc: Exception) -> str | None:
+    """One actionable sentence for a known provider failure, else `None`.
+
+    Split out of `_explain` so `friendly_error` can use it too. Previously only
+    key validation classified these, so a rate limit hit *during* an analysis
+    fell through to the catch-all and the user got the provider's raw JSON --
+    org id included, truncated mid-word -- instead of "wait a minute and
+    retry". The user is least able to act on a raw error at exactly the moment
+    it costs them the most.
+
+    Returns `None` for anything unrecognised, so the caller decides what a
+    non-provider exception should say.
+    """
+    from .redact import redact
+
+    low = redact(str(exc)).lower()
+    if ("authentication" in low or "incorrect api key" in low or "invalid api key" in low
+            or "401" in low or "unauthorized" in low):
+        return "That API key was rejected by the provider."
+    if "429" in low or "rate limit" in low or "rate_limit" in low:
+        # Distinguish the two, because the remedies are days apart.
+        if "per day" in low or "tpd" in low or "daily" in low:
+            return ("The provider's daily token allowance for this key is spent. "
+                    "It resets on the provider's own schedule -- switch models or "
+                    "use another key to keep going today.")
+        return ("Rate limited by the provider. On a free tier this usually means "
+                "tokens-per-minute, not requests -- wait about a minute and retry, "
+                "or pick a model with a higher limit.")
+    if "quota" in low or "insufficient_quota" in low or "billing" in low:
+        return "The key is valid but the account has no quota or credit left."
+    if "model" in low and ("not found" in low or "does not exist" in low):
+        return "The provider does not recognise that model for this key."
+    return None
+
+
 def _explain(exc: Exception) -> str:
     """Turn a provider SDK exception into one sentence a human can act on.
 
@@ -262,20 +297,11 @@ def _explain(exc: Exception) -> str:
     """
     from .redact import redact
 
-    msg = redact(str(exc))
-    low = msg.lower()
-    if "authentication" in low or "incorrect api key" in low or "invalid api key" in low \
-            or "401" in low or "unauthorized" in low:
-        return "That API key was rejected by the provider."
-    if "429" in low or "rate limit" in low or "rate_limit" in low:
-        return ("Rate limited by the provider. On a free tier this usually means "
-                "tokens-per-minute, not requests -- wait about a minute and retry, "
-                "or pick a model with a higher TPM limit.")
-    if "quota" in low or "insufficient_quota" in low or "billing" in low:
-        return "The key is valid but the account has no quota or credit left."
-    if "model" in low and ("not found" in low or "does not exist" in low):
-        return "The provider does not recognise that model for this key."
-    return f"The provider rejected the request: {msg[:300]}"
+    known = classify_provider_error(exc)
+    if known:
+        return known
+
+    return f"The provider rejected the request: {redact(str(exc))[:300]}"
 
 
 @tool

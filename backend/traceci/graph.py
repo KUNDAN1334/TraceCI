@@ -459,12 +459,22 @@ def friendly_error(exc: BaseException) -> str:
     of bug open for the next library that quotes a header back at us.
     """
     from .github import LogsExpired, NoFailedRun
-    from .models import ModelError
+    from .models import ModelError, classify_provider_error
     from .redact import redact
     from .repo_input import RepoInputError
 
     if isinstance(exc, (RepoInputError, NoFailedRun, LogsExpired, ModelError, GitHubError)):
         return redact(str(exc))
+
+    # Provider SDK failures -- 429, auth, quota -- reach here as their own
+    # exception types, not as ModelError. Without this they fell through to
+    # the catch-all and the user got raw provider JSON at the exact moment
+    # they most needed a next step.
+    if isinstance(exc, Exception):
+        known = classify_provider_error(exc)
+        if known:
+            return known
+
     name = type(exc).__name__
     if "Recursion" in name or "GraphRecursion" in name:
         return ("The agent hit its step limit without reaching a conclusion. "
