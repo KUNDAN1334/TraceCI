@@ -254,8 +254,15 @@ def looks_like_a_placeholder(value: str | None) -> bool:
 
 
 def _explain(exc: Exception) -> str:
-    """Turn a provider SDK exception into one sentence a human can act on."""
-    msg = str(exc)
+    """Turn a provider SDK exception into one sentence a human can act on.
+
+    Redacted for the same reason `friendly_error` is: the final branch quotes
+    the provider's own error text back at the user, and provider SDKs include
+    the request -- headers and all -- when a request was malformed.
+    """
+    from .redact import redact
+
+    msg = redact(str(exc))
     low = msg.lower()
     if "authentication" in low or "incorrect api key" in low or "invalid api key" in low \
             or "401" in low or "unauthorized" in low:

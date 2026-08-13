@@ -443,17 +443,30 @@ def count_tool_calls(messages: list) -> int:
 
 
 def friendly_error(exc: BaseException) -> str:
-    """One sentence a human can act on, never a stack trace."""
+    """One sentence a human can act on -- never a stack trace, never a key.
+
+    Every return path is redacted, including the ones carrying our own
+    exceptions, because a `GitHubError` message is sometimes built from a
+    response body we did not write.
+
+    The catch-all on the last line is what made this necessary. It interpolates
+    an arbitrary exception, and libraries put request headers into their error
+    text: a GitHub token with a stray trailing newline produced
+    `LocalProtocolError: Illegal header value b'Bearer ghp_...'`, which this
+    function then streamed to the browser and the UI rendered on screen.
+
+    Fixing only the newline would have closed that one hole and left the class
+    of bug open for the next library that quotes a header back at us.
+    """
     from .github import LogsExpired, NoFailedRun
     from .models import ModelError
+    from .redact import redact
     from .repo_input import RepoInputError
 
-    if isinstance(exc, (RepoInputError, NoFailedRun, LogsExpired, ModelError)):
-        return str(exc)
-    if isinstance(exc, GitHubError):
-        return str(exc)
+    if isinstance(exc, (RepoInputError, NoFailedRun, LogsExpired, ModelError, GitHubError)):
+        return redact(str(exc))
     name = type(exc).__name__
     if "Recursion" in name or "GraphRecursion" in name:
         return ("The agent hit its step limit without reaching a conclusion. "
                 "This usually means the model kept requesting tools; try another model.")
-    return f"Analysis failed ({name}): {str(exc)[:300]}"
+    return redact(f"Analysis failed ({name}): {str(exc)[:300]}")

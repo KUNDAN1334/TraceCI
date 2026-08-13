@@ -39,6 +39,7 @@ from pydantic import BaseModel, Field
 
 from .graph import analysis_config, build_graph, count_tool_calls, friendly_error
 from .models import DEFAULT_MODEL_ID, catalog_payload, validate_key
+from .redact import clean_credential, redact
 from .tools import ToolSession, describe_tool_call
 
 # Unlike scripts/run_agent.py (which loads this itself), nothing loaded .env
@@ -48,7 +49,10 @@ from .tools import ToolSession, describe_tool_call
 load_dotenv()
 
 DB_PATH = os.getenv("TRACECI_DB", "./traceci_checkpoints.sqlite")
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+# Stripped at the boundary: a token pasted into a hosting provider's
+# environment field routinely picks up a trailing newline, and a header value
+# containing one cannot be sent at all.
+GITHUB_TOKEN = clean_credential(os.getenv("GITHUB_TOKEN"))
 ALLOWED_ORIGINS = [
     o.strip() for o in os.getenv(
         "ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000"
@@ -176,7 +180,16 @@ async def analyze_stream(req: AnalyzeRequest, saver: Any,
         github_token=GITHUB_TOKEN,
     )
 
-    yield step("search", f"Looking up {req.repo}", "finding the most recent failed run")
+    # Redacted because this echoes raw user input straight back to the browser
+    # and into the browser's stored history. A tokenised clone URL --
+    # `https://ghp_xxx@github.com/owner/repo` -- is a normal thing to have on
+    # your clipboard, and pasting one here would otherwise put the token on
+    # screen before anything had even been parsed.
+    yield step(
+        "search",
+        f"Looking up {redact(req.repo)}",
+        "finding the most recent failed run",
+    )
 
     emitted_prefetch = False
     try:

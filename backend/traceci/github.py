@@ -17,6 +17,8 @@ from typing import Any
 
 import httpx
 
+from .redact import clean_credential
+
 API = "https://api.github.com"
 UA = "TraceCI/0.1 (+https://github.com/)"
 
@@ -96,8 +98,15 @@ def _headers(token: str | None) -> dict[str, str]:
         "X-GitHub-Api-Version": "2022-11-28",
         "User-Agent": UA,
     }
-    if token:
-        h["Authorization"] = f"Bearer {token}"
+    # `clean_credential` here rather than at every call site. A token pasted
+    # into a hosting provider's environment field routinely arrives with a
+    # trailing newline, and a header value containing one is not just invalid
+    # -- it is the shape of a header-injection attack, so httpx refuses to
+    # build the request at all. The resulting exception quotes the header,
+    # which is how the token ends up in an error message.
+    cleaned = clean_credential(token)
+    if cleaned:
+        h["Authorization"] = f"Bearer {cleaned}"
     return h
 
 
